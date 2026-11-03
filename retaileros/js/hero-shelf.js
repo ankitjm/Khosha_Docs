@@ -26,6 +26,7 @@ export function mountHero(container, opts = {}) {
     rows = 30,
     pingEvery = 220, // ms between "sales"
     pingLife = 1.8, // seconds a ping lasts
+    framing = 'hero', // 'hero' leaves sky above for a headline; 'tile' fills a card
   } = opts;
 
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -41,8 +42,8 @@ export function mountHero(container, opts = {}) {
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(28, 1, 0.1, 120);
-  const camBase = new THREE.Vector3(0, 8.5, 21);
-  const lookAt = new THREE.Vector3(0, -0.6, -4);
+  const camBase = framing === 'tile' ? new THREE.Vector3(0, 12, 15) : new THREE.Vector3(0, 8.5, 21);
+  const lookAt = framing === 'tile' ? new THREE.Vector3(0, 0, -3) : new THREE.Vector3(0, -0.6, -4);
   camera.position.copy(camBase);
 
   const hemi = new THREE.HemisphereLight(0xffffff, 0x888888, 1.6);
@@ -86,7 +87,7 @@ export function mountHero(container, opts = {}) {
   readTheme();
   const mq = window.matchMedia('(prefers-color-scheme: dark)');
   mq.addEventListener?.('change', readTheme);
-  new MutationObserver(readTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  new MutationObserver(readTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'style'] });
 
   // ---- interaction -----------------------------------------------------------
   const pointer = new THREE.Vector2();

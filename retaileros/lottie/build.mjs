@@ -634,6 +634,361 @@ icons['orders'] = anim('Orders', [
 // =============================================================================
 // LOADER — loops 0 → 120 seamlessly (rounded square trace + comet)
 // =============================================================================
+// ---- shared shapes for the second wave of icons -----------------------------
+/** map pin: round head centred at (cx, cy), radius s, tip below */
+const pin = (cx, cy, s) => {
+  const k = 0.56 * s;
+  return path(
+    [
+      [cx, cy + 1.75 * s],
+      [cx - s, cy],
+      [cx, cy - s],
+      [cx + s, cy],
+    ],
+    true,
+    [
+      [[0, 0], [0, 0]],
+      [[0, 0], [0, -k]],
+      [[-k, 0], [k, 0]],
+      [[0, -k], [0, 0]],
+    ]
+  );
+};
+const P = (x, y) => [x, y, 0];
+/** drop keyframes for a layer position (rest = 48,48) */
+const dropIn = (t, from = 30) => an([[0, P(48, from)], [t, P(48, from)], [t + 26, P(48, 48)]]);
+/** remove keyframes that share a frame with the previous one */
+const uniq = (keys) => keys.filter((k, i, a) => i === 0 || k[0] > a[i - 1][0]);
+
+// 12. Payments — card + contactless waves that pulse on hover
+icons['payments'] = anim('Payments', [
+  layer('ink', [
+    group([rect(38, 58, 48, 32, 5)], { color: INK, draw: [0, 40] }),
+    group([line([14, 50], [62, 50])], { color: INK, draw: [14, 24] }),
+    group([line([22, 64], [34, 64])], { color: INK, draw: [20, 20], strokeOpacity: st(55) }),
+  ]),
+  ...[0, 1, 2].map((i) =>
+    layer(
+      'accent',
+      [group([arc(64, 38, 7 + i * 6, 290, 380)], { color: ACCENT, draw: [24 + i * 6, 20] })],
+      { o: an([[0, 100], [60, 100], [64 + i * 8, 15], [80 + i * 8, 100], [100 + i * 8, 15], [116 + i * 8, 100]]) },
+      `wave-${i}`
+    )
+  ),
+]);
+
+// 13. Barcode scan — frame brackets, bars, a scan line that sweeps
+icons['scan'] = anim('Scan', [
+  layer('ink', [
+    group(
+      [
+        line([18, 30], [18, 18], [30, 18]),
+        line([66, 18], [78, 18], [78, 30]),
+        line([78, 66], [78, 78], [66, 78]),
+        line([30, 78], [18, 78], [18, 66]),
+      ],
+      { color: INK, draw: [0, 30] }
+    ),
+    group([32, 37, 41, 48, 53, 57, 64].map((x) => line([x, 34], [x, 62])), { color: INK, width: 2, draw: [10, 28], strokeOpacity: st(70) }),
+  ]),
+  layer('accent', [group([line([24, 48], [72, 48])], { color: ACCENT, draw: [20, 20] })], {
+    p: an([
+      [0, P(48, 34)],
+      [24, P(48, 34)],
+      [50, P(48, 48)],
+      [60, P(48, 48)],
+      [80, P(48, 32), EASE_IO],
+      [110, P(48, 64), EASE_IO],
+      [135, P(48, 48)],
+    ]),
+  }),
+]);
+
+// 14. Cart — basket on wheels; the item drops in and hops on hover
+icons['cart'] = anim('Cart', [
+  layer(
+    'ink',
+    [
+      group([line([12, 22], [22, 22], [30, 60], [70, 60], [78, 32], [24, 32])], { color: INK, draw: [0, 40] }),
+      group([circle(36, 72, 4.5), circle(64, 72, 4.5)], { color: INK, draw: [18, 24] }),
+    ],
+    { p: an([[0, P(48, 48)], [92, P(48, 48)], [96, P(48, 49.5)], [104, P(48, 48)]]) }
+  ),
+  layer('accent', [group([rect(52, 46, 16, 13, 2)], { color: ACCENT, draw: [24, 24] })], {
+    p: an([
+      [0, P(48, 30)],
+      [24, P(48, 30)],
+      [50, P(48, 48)],
+      [60, P(48, 48)],
+      [74, P(48, 36), EASE_IO],
+      [92, P(48, 48)],
+      [98, P(48, 46)],
+      [106, P(48, 48)],
+    ]),
+  }),
+]);
+
+// 15. Offers — a price tag with %, swings from its hole
+const swing = () => ({
+  a: st(P(64, 32)),
+  p: st(P(64, 32)),
+  r: an([[0, 0], [60, 0], [72, -12, EASE_IO], [90, 8, EASE_IO], [106, -4, EASE_IO], [120, 0]]),
+});
+icons['discount'] = anim('Offers', [
+  layer(
+    'ink',
+    [
+      group([path([[18, 48], [46, 20], [76, 20], [76, 50], [48, 78]], true)], { color: INK, draw: [0, 40] }),
+      group([circle(64, 32, 4)], { color: INK, draw: [16, 20] }),
+    ],
+    swing()
+  ),
+  layer('accent', [group([circle(40, 50, 3.2), circle(54, 62, 3.2), line([36, 66], [58, 46])], { color: ACCENT, draw: [24, 30] })], swing()),
+]);
+
+// 16. Notifications — a bell that rings, with a badge that pops
+const ring = () => ({
+  a: st(P(48, 26)),
+  p: st(P(48, 26)),
+  r: an([[0, 0], [60, 0], [70, 14, EASE_IO], [82, -12, EASE_IO], [94, 8, EASE_IO], [106, -4, EASE_IO], [118, 0]]),
+});
+icons['notify'] = anim('Notifications', [
+  layer(
+    'ink',
+    [
+      group([arc(48, 44, 14, 180, 360), line([34, 44], [34, 58], [27, 65]), line([62, 44], [62, 58], [69, 65])], { color: INK, draw: [0, 40] }),
+      group([line([25, 65], [71, 65]), line([48, 26], [48, 30])], { color: INK, draw: [14, 24] }),
+    ],
+    ring()
+  ),
+  layer('accent', [group([arc(48, 68, 6, 0, 180)], { color: ACCENT, draw: [24, 20] })], ring()),
+  layer('accent-fill', [group([circle(66, 28, 6)], { fill: ACCENT })], {
+    a: st(P(66, 28)),
+    p: st(P(66, 28)),
+    s: an([
+      [0, [0, 0, 100]],
+      [30, [0, 0, 100]],
+      [44, [115, 115, 100]],
+      [52, [100, 100, 100]],
+      [60, [100, 100, 100]],
+      [70, [130, 130, 100]],
+      [84, [100, 100, 100]],
+    ]),
+  }),
+]);
+
+// 17. Delivery — a truck with speed lines; bumps along on hover
+const bumpy = () =>
+  an([
+    [0, P(48, 48)],
+    [60, P(48, 48)],
+    [68, P(48, 46)],
+    [76, P(48, 48)],
+    [84, P(48, 46.5)],
+    [92, P(48, 48)],
+    [100, P(48, 47)],
+    [108, P(48, 48)],
+  ]);
+icons['delivery'] = anim('Delivery', [
+  layer(
+    'ink',
+    [
+      group([rect(36, 48, 40, 28, 3)], { color: INK, draw: [0, 38] }),
+      group([line([56, 40], [68, 40], [78, 51], [78, 62], [56, 62])], { color: INK, draw: [10, 30] }),
+      group([circle(28, 67, 5), circle(66, 67, 5)], { color: INK, draw: [18, 24] }),
+    ],
+    { p: bumpy() }
+  ),
+  layer('accent', [group([line([4, 42], [11, 42]), line([2, 52], [9, 52])], { color: ACCENT, draw: [28, 18] })], {
+    p: an([[0, P(48, 48)], [60, P(48, 48)], [72, P(43, 48), EASE_IO], [96, P(48, 48)]]),
+  }),
+]);
+
+// 18. Calendar — a date gets circled
+icons['calendar'] = anim('Calendar', [
+  layer('ink', [
+    group([rect(48, 54, 56, 48, 6)], { color: INK, draw: [0, 40] }),
+    group([line([20, 42], [76, 42]), line([36, 24], [36, 34]), line([60, 24], [60, 34])], { color: INK, draw: [12, 26] }),
+  ]),
+  layer('ink-fill', [group([circle(34, 56, 2.3), circle(48, 56, 2.3), circle(62, 56, 2.3), circle(34, 68, 2.3), circle(48, 68, 2.3)], { fill: INK })], {
+    o: an([[0, 0], [24, 0], [40, 100]]),
+  }),
+  layer('accent', [
+    group([circle(62, 68, 7)], { color: ACCENT, trim: trim({ e: an([[0, 0], [34, 0], [58, 100], [70, 100], [71, 0], [100, 100]]) }) }),
+  ]),
+]);
+
+// 19. Multi-store — three pins drop onto the map, then hop in turn
+const pinHop = (i, base) =>
+  an(
+    uniq([
+      [0, P(48, base)],
+      [i * 6, P(48, base)],
+      [i * 6 + 28, P(48, 48)],
+      [60 + i * 10, P(48, 48)],
+      [72 + i * 10, P(48, 40), EASE_IO],
+      [86 + i * 10, P(48, 48)],
+    ])
+  );
+icons['stores'] = anim('Multi-store', [
+  layer('ink', [group([line([14, 78], [82, 78])], { color: INK, draw: [0, 30], strokeOpacity: st(35) })]),
+  layer('ink', [group([pin(22, 52, 7), circle(22, 52, 2.4)], { color: INK, draw: [0, 30] })], { p: pinHop(0, 36) }, 'pin-l'),
+  layer('ink', [group([pin(74, 52, 7), circle(74, 52, 2.4)], { color: INK, draw: [12, 30] })], { p: pinHop(2, 36) }, 'pin-r'),
+  layer('accent', [group([pin(48, 40, 12), circle(48, 40, 4)], { color: ACCENT, draw: [6, 34] })], { p: pinHop(1, 28) }, 'pin-main'),
+]);
+
+// 20. Staff — an ID badge on a lanyard that sways
+const sway = () => ({
+  a: st(P(48, 6)),
+  p: st(P(48, 6)),
+  r: an([[0, 0], [60, 0], [72, 8, EASE_IO], [88, -6, EASE_IO], [102, 3, EASE_IO], [116, 0]]),
+});
+icons['staff'] = anim('Staff', [
+  layer(
+    'ink',
+    [
+      group([rect(48, 56, 40, 50, 6)], { color: INK, draw: [6, 38] }),
+      group([line([42, 38], [54, 38])], { color: INK, draw: [16, 16] }),
+      group([circle(48, 52, 7), arc(48, 73, 12, 200, 340)], { color: INK, draw: [20, 30] }),
+    ],
+    sway()
+  ),
+  layer('accent', [group([line([36, 6], [48, 31], [60, 6])], { color: ACCENT, draw: [0, 30] })], sway()),
+]);
+
+// 21. Settings — three sliders whose knobs glide on hover
+const knob = (cls, hex, cx, cy, dx, i) =>
+  layer(
+    cls,
+    [
+      group([circle(cx, cy, 6)], {
+        fill: hex,
+        transform: {
+          a: [cx, cy],
+          p: [cx, cy],
+          s: an([[0, [0, 0]], [18 + i * 6, [0, 0]], [34 + i * 6, [112, 112]], [44 + i * 6, [100, 100]]]),
+        },
+      }),
+    ],
+    { p: an([[0, P(48, 48)], [60 + i * 6, P(48, 48)], [82 + i * 6, P(48 + dx, 48), EASE_IO], [112 + i * 6, P(48, 48), EASE_IO]]) },
+    `knob-${i}`
+  );
+icons['controls'] = anim('Settings', [
+  layer('ink', [
+    group([line([18, 30], [78, 30])], { color: INK, draw: [0, 30], strokeOpacity: st(40) }),
+    group([line([18, 48], [78, 48])], { color: INK, draw: [6, 30], strokeOpacity: st(40) }),
+    group([line([18, 66], [78, 66])], { color: INK, draw: [12, 30], strokeOpacity: st(40) }),
+  ]),
+  knob('ink-fill', INK, 36, 30, 20, 0),
+  knob('accent-fill', ACCENT, 60, 48, -22, 1),
+  knob('ink-fill', INK, 42, 66, 18, 2),
+]);
+
+// 22. Search — a magnifier with a glint that scans in a small loop
+const scanLoop = () =>
+  an([
+    [0, P(48, 48)],
+    [60, P(48, 48)],
+    [72, P(44, 44), EASE_IO],
+    [84, P(52, 44), EASE_IO],
+    [96, P(52, 52), EASE_IO],
+    [108, P(44, 50), EASE_IO],
+    [122, P(48, 48)],
+  ]);
+icons['search'] = anim('Search', [
+  layer(
+    'ink',
+    [group([circle(42, 42, 16)], { color: INK, draw: [0, 36] }), group([line([54, 54], [72, 72])], { color: INK, width: 3.5, draw: [18, 20] })],
+    { p: scanLoop() }
+  ),
+  layer('accent', [group([arc(42, 42, 9, 200, 270)], { color: ACCENT, draw: [28, 20] })], { p: scanLoop() }),
+]);
+
+// 23. Secure — a shield; the check re-draws as the shield pulses
+const pulseS = () => ({
+  s: an([[0, [100, 100, 100]], [60, [100, 100, 100]], [72, [107, 107, 100], EASE_IO], [92, [100, 100, 100]]]),
+});
+icons['secure'] = anim('Secure', [
+  layer(
+    'ink',
+    [
+      group(
+        [
+          path(
+            [
+              [48, 16],
+              [72, 25],
+              [72, 46],
+              [48, 80],
+              [24, 46],
+              [24, 25],
+            ],
+            true,
+            [
+              [[0, 0], [0, 0]],
+              [[0, 0], [0, 0]],
+              [[0, 0], [0, 16]],
+              [[14, -10], [-14, -10]],
+              [[0, 16], [0, 0]],
+              [[0, 0], [0, 0]],
+            ]
+          ),
+        ],
+        { color: INK, draw: [0, 42] }
+      ),
+    ],
+    pulseS()
+  ),
+  layer(
+    'accent',
+    [
+      group([line([37, 48], [45, 56], [60, 40])], {
+        color: ACCENT,
+        width: 3.5,
+        trim: trim({ e: an([[0, 0], [26, 0], [52, 100], [62, 100], [63, 0], [90, 100]]) }),
+      }),
+    ],
+    pulseS()
+  ),
+]);
+
+// 24. Loyalty — a gift box whose lid lifts on hover
+const lid = () => ({
+  a: st(P(48, 40)),
+  p: an([[0, P(48, 40)], [60, P(48, 40)], [74, P(48, 30), EASE_IO], [96, P(48, 30)], [112, P(48, 40), EASE_IO]]),
+  r: an([[0, 0], [60, 0], [74, -8, EASE_IO], [96, -8], [112, 0, EASE_IO]]),
+});
+icons['loyalty'] = anim('Loyalty', [
+  layer('ink', [group([rect(48, 62, 48, 30, 4)], { color: INK, draw: [0, 40] })]),
+  layer('accent', [group([line([48, 47], [48, 77])], { color: ACCENT, draw: [22, 20] })]),
+  layer('ink', [group([rect(48, 40, 56, 12, 3)], { color: INK, draw: [10, 34] })], lid(), 'lid'),
+  layer('accent', [group([line([48, 34], [48, 46]), circle(41, 27, 6), circle(55, 27, 6)], { color: ACCENT, draw: [28, 26] })], lid(), 'bow'),
+]);
+
+// DOTS — typing / thinking loader, loops 0 → 90
+icons['dots'] = anim(
+  'Dots',
+  [0, 1, 2].map((i) =>
+    layer(
+      i === 1 ? 'accent-fill' : 'ink-fill',
+      [group([circle(30 + i * 18, 48, 5)], { fill: i === 1 ? ACCENT : INK })],
+      {
+        p: an(
+          uniq([
+            [0, P(48, 48)],
+            [i * 10, P(48, 48)],
+            [i * 10 + 15, P(48, 40), EASE_IO],
+            [i * 10 + 30, P(48, 48), EASE_IO],
+            [90, P(48, 48)],
+          ])
+        ),
+      },
+      `dot-${i}`
+    )
+  ),
+  { op: 90, markers: [{ tm: 0, cm: 'loop', dr: 90 }] }
+);
+
 icons['loader'] = anim(
   'Loader',
   [

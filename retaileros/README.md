@@ -3,7 +3,7 @@
 Lottie icons, a Three.js hero, and a Spline-style 3D object for the RetailerOS landing page.
 All of it shares one palette, one easing curve and one motion language.
 
-Open `index.html` through any static server (`python3 -m http.server` inside this folder) to see every piece in context. It works in light and dark mode, on desktop and mobile, and with reduced motion.
+Open `gallery.html` to see **every element on its own in one grid**, with replay, download, a loop toggle, light/dark and an accent picker. Open `index.html` to see the pieces in a landing-page context. Either needs a static server (`python3 -m http.server` inside this folder). It works in light and dark mode, on desktop and mobile, and with reduced motion.
 
 > **About the brief.** I couldn't load `retaileros.in` from the build environment, because the network policy blocked the host. The plan below is based on the public product listing for *Retailer OS AI*: POS, inventory, online store, marketplaces, CRM, accounting, built-in AI, and an India focus.
 > The palette, the fonts and the page copy are **placeholders**. Every colour is a CSS token in `css/retaileros.css`, so the whole kit takes on the real brand by editing about six lines.
@@ -26,19 +26,21 @@ Open `index.html` through any static server (`python3 -m http.server` inside thi
 
 ```
 retaileros/
+├── gallery.html            ← motion library: every element in one grid
 ├── index.html              ← showcase landing page (every asset in context)
 ├── css/retaileros.css      ← brand + motion tokens, Lottie recolour hooks
 ├── js/
 │   ├── lottie-icons.js     ← tiny runtime: in-view intro, hover, loop, reduced-motion
 │   ├── hero-shelf.js       ← Three.js hero "The Living Shelf"
-│   └── layers-stack.js     ← Three.js "The Stack" (Spline-style clay + glass)
+│   ├── layers-stack.js     ← Three.js "The Stack" (Spline-style clay + glass)
+│   └── clay-objects.js     ← Three.js clay objects: ₹ coin, parcel, shopping bag
 └── lottie/
     ├── build.mjs           ← generator: every icon authored as code
     ├── manifest.json
-    └── *.json              ← 13 Lottie animations
+    └── *.json              ← 27 Lottie animations
 ```
 
-### Lottie set (13 files, 0.5–1.1 KB each gzipped)
+### Lottie set (27 files, about 0.5–1.1 KB each gzipped)
 
 All icons are on a 96 × 96 grid with a 3 px stroke and round caps. Every file has two markers: `intro` (frames 0–60, the draw-on) and `hover` (frames 60–150, the gesture, which always returns to rest).
 
@@ -56,6 +58,20 @@ All icons are on a 96 × 96 grid with a 3 px stroke and round caps. Every file h
 | `orders` | parcel + location pin drops | Delivery / orders feature | Order tracking, WhatsApp updates |
 | `success` | ring closes, check lands | Form submitted state | Payment received, return filed |
 | `loader` | comet traces a rounded square (loop) | Form busy state | App-wide loader / splash |
+| `payments` | card + contactless waves pulse | Payments / UPI feature | Checkout, payment received |
+| `scan` | barcode bars, scan line sweeps | Billing speed feature | Scanner screen, stock count |
+| `cart` | item drops in and hops | Online store / checkout | Abandoned-cart email |
+| `discount` | price tag with % swings | Offers & promotions | Coupon applied |
+| `notify` | bell rings, badge pops | Alerts feature | Notification centre |
+| `delivery` | truck bumps along, speed lines | Delivery feature | Dispatch status |
+| `calendar` | a date gets circled | Scheduling, expiry tracking | Reminders, due dates |
+| `stores` | three pins hop in turn | Multi-store / franchise | Branch switcher |
+| `staff` | ID badge sways on lanyard | Staff & roles | Team invite, login |
+| `controls` | slider knobs glide | Settings / customisation | Preferences screen |
+| `search` | lens scans in a loop | Product search | Empty search state |
+| `secure` | shield pulses, check redraws | Security / backups | Data-safe confirmation |
+| `loyalty` | gift lid lifts | Loyalty & rewards | Points earned |
+| `dots` | three-dot bounce (loop) | AI "thinking" state | Chat / typing indicator |
 | `flow` | Sale → Stock → Books, nodes light in sequence (loop, 360 × 120) | "One sale, everywhere at once" section | Pitch deck, explainer video, social post |
 
 ### Three.js scenes
@@ -63,6 +79,7 @@ All icons are on a 96 × 96 grid with a 3 px stroke and round caps. Every file h
 | Scene | Idea | Cost |
 |---|---|---|
 | **The Living Shelf** (`hero-shelf.js`) | A calm field of rounded tiles (shelves, SKUs, counters) breathing like a slow tide. Every ~220 ms one tile lifts and warms to the accent: a sale happening somewhere. A slight mouse parallax. | 1 InstancedMesh, ~1.2k instances, **1 draw call**, no shadows, no post-processing. |
+| **Clay objects** (`clay-objects.js`) | A ₹ coin that turns and flips on hover, a taped parcel that hops and squashes, a shopping bag that sways from its handles. Transparent background, so they sit on any card. | ~5–10 meshes each, same lighting setup as The Stack. |
 | **The Stack** (`layers-stack.js`) | Three soft slabs, *Sell* (accent clay), *Stock* (glass, with bins inside) and *Books* (stone), float and **unfold** as the section reaches the centre of the screen or on hover. HTML labels track each layer. | ~10 meshes, environment lighting from `RoomEnvironment`, a fake contact shadow (a canvas gradient). |
 
 **Why Spline-style rather than Spline.** The Spline runtime plus a scene export is roughly 600 KB+ and can't read your CSS tokens. The Stack gets the same soft clay and glass look with `MeshPhysicalMaterial` (clearcoat and transmission), themes itself from the page, and costs about 4 KB of code on top of Three.js. If you later want a hero-grade product render, a single Spline scene in one section is a fine addition. Keep it to one.

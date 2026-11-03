@@ -79,7 +79,7 @@ export function mountStack(container) {
   };
   readTheme();
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', readTheme);
-  new MutationObserver(readTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  new MutationObserver(readTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'style'] });
 
   // ---- geometry ----------------------------------------------------------------
   const W = 3.4;
