@@ -1,0 +1,8 @@
+Stage,Probability
+1 New lead,0.05
+2 Qualified,0.15
+3 Meeting/Demo,0.3
+4 Proposal,0.5
+5 Negotiation,0.75
+6 Won,1.0
+6 Lost,0.0

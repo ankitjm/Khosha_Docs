@@ -1,0 +1,13 @@
+Shareholder,Shares before,% before,New shares,Shares after,% after,Notes
+Founder A,600000,,0,,,
+Founder B,300000,,0,,,
+ESOP pool,100000,,50000,,,Top-up in round
+Seed investor,0,,200000,,,Rs 2 cr at Rs 100/share
+,,,,,,
+TOTAL,,,,,,
+
+Round inputs,,,,,,
+Investment (Rs),20000000,,,,,
+Price per share (Rs),,,,,,
+Post-money valuation (Rs),,,,,,
+Pre-money valuation (Rs),,,,,,

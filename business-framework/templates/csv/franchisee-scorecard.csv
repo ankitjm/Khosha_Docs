@@ -1,0 +1,9 @@
+Criterion,Weight,Score (1-5),Weighted
+Financial capacity (investment + 6 months buffer),0.25,,
+"Operating involvement (full-time, hands-on)",0.2,,
+Relevant business / people experience,0.15,,
+"Values fit, willingness to follow the system",0.15,,
+Local network & market knowledge,0.1,,
+Location quality,0.1,,
+References & background,0.05,,
+TOTAL (approve >= 3.8),,,

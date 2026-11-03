@@ -1,0 +1,12 @@
+KPI,Formula,Target,Wk 1,Wk 2,Wk 3,Wk 4,Wk 5,Wk 6,Wk 7,Wk 8,Wk 9,Wk 10,Wk 11,Wk 12,Wk 13
+Revenue,Total invoiced sales,
+Gross margin %,(Revenue - direct costs) / revenue,
+Cash runway (months),Cash / monthly net burn,
+Lead-to-customer %,New customers / new leads,
+CAC,S&M spend / new customers,
+LTV,AOV x orders/yr x years x margin,
+LTV : CAC,LTV / CAC (aim >= 3),3
+DSO (days),Receivables / revenue x 365,
+Repeat rate %,Returning / total customers,
+NPS,% promoters - % detractors,
+Revenue per employee,Revenue / headcount,

@@ -1,0 +1,42 @@
+Code,Account,Group,Type
+1010,Bank - Current Account,Assets,Bank
+1020,Cash in Hand,Assets,Cash
+1100,Accounts Receivable,Assets,Current Asset
+1200,Inventory,Assets,Current Asset
+1300,GST Input Credit,Assets,Current Asset
+1310,TDS Receivable,Assets,Current Asset
+1400,Security Deposits,Assets,Current Asset
+1500,Fixed Assets,Assets,Fixed Asset
+2010,Accounts Payable,Liabilities,Current Liability
+2100,GST Output Payable,Liabilities,Duties & Taxes
+2110,TDS Payable,Liabilities,Duties & Taxes
+2120,PF / ESI / PT Payable,Liabilities,Duties & Taxes
+2200,Salaries Payable,Liabilities,Current Liability
+2300,Customer Advances,Liabilities,Current Liability
+2500,Loans,Liabilities,Long-term Liability
+3010,Share / Partner Capital,Equity,Capital
+3100,Reserves & Surplus,Equity,Capital
+3200,Drawings,Equity,Capital
+4010,Product Sales,Income,Sales
+4020,Service Income,Income,Sales
+4030,Subscription Income,Income,Sales
+4040,Franchise Fees,Income,Sales
+4050,Royalty Income,Income,Sales
+4900,Other Income,Income,Other Income
+5010,Purchases / Raw Material,Direct Costs,COGS
+5020,Direct Labour,Direct Costs,COGS
+5030,Freight Inward,Direct Costs,COGS
+5040,Payment Gateway Fees,Direct Costs,COGS
+6010,Salaries & Wages,Operating Expenses,Expense
+6020,Rent,Operating Expenses,Expense
+6030,Utilities,Operating Expenses,Expense
+6040,Software & Subscriptions,Operating Expenses,Expense
+6050,Marketing & Advertising,Operating Expenses,Expense
+6060,Travel,Operating Expenses,Expense
+6070,Professional Fees,Operating Expenses,Expense
+6080,Repairs & Maintenance,Operating Expenses,Expense
+6090,Insurance,Operating Expenses,Expense
+7010,Interest,Finance & Other,Expense
+7020,Bank Charges,Finance & Other,Expense
+7030,Depreciation,Finance & Other,Expense
+7040,Income Tax,Finance & Other,Tax

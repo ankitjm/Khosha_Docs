@@ -1,0 +1,1009 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pancha Khosha Business Framework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #15203b;
+    --ink-2: #3c4660;
+    --muted: #6b7388;
+    --line: #d9dce4;
+    --paper: #ffffff;
+    --tint: #f5f3ee;
+    --accent: #d9731a;
+    --l1: #8a5a2b;  /* Annamaya  - foundation */
+    --l2: #2f7d4f;  /* Pranamaya - people */
+    --l3: #2b5fa8;  /* Manomaya  - systems */
+    --l4: #6a46a8;  /* Vijnanamaya - growth */
+    --l5: #b8860b;  /* Anandamaya - scale */
+  }
+  @page { size: A4; margin: 18mm 16mm 20mm 16mm; }
+  @page :first { margin: 0; }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font: 10.2pt/1.5 Inter, "DejaVu Sans", Arial, sans-serif;
+  }
+  h1, h2, h3, .serif { font-family: Fraunces, "DejaVu Serif", Georgia, serif; font-weight: 700; color: var(--ink); }
+  h1 { font-size: 26pt; line-height: 1.15; margin: 0 0 6pt; }
+  h2 { font-size: 15pt; margin: 18pt 0 6pt; break-after: avoid; }
+  h3 { font-size: 11.5pt; margin: 12pt 0 4pt; break-after: avoid; font-family: Inter, sans-serif; font-weight: 700; }
+  p { margin: 0 0 7pt; }
+  ul, ol { margin: 0 0 8pt; padding-left: 16pt; }
+  li { margin: 0 0 2pt; }
+  a { color: var(--l3); text-decoration: none; }
+  small, .muted { color: var(--muted); }
+  .page { break-before: page; }
+  .avoid { break-inside: avoid; }
+
+  /* Cover */
+  .cover {
+    height: 297mm; width: 210mm; position: relative; overflow: hidden;
+    background: var(--ink); color: #fff; padding: 26mm 20mm;
+    display: flex; flex-direction: column;
+  }
+  .cover .brand { font: 600 10pt Inter, sans-serif; letter-spacing: .22em; text-transform: uppercase; color: #f3c89a; }
+  .cover h1 { color: #fff; font-size: 40pt; margin-top: 30mm; max-width: 150mm; }
+  .cover .sub { font-size: 14pt; color: #d6dbea; max-width: 140mm; margin-top: 6mm; }
+  .cover .rings { position: absolute; right: -55mm; bottom: -75mm; width: 190mm; height: 190mm; }
+  .cover .foot { margin-top: auto; font-size: 10pt; color: #b9c0d4; position: relative; z-index: 2; }
+  .cover .layers { display: flex; gap: 4mm; margin-top: 14mm; flex-wrap: wrap; position: relative; z-index: 2; }
+  .cover .layers span { border: 1px solid rgba(255,255,255,.35); border-radius: 20px; padding: 3pt 10pt; font-size: 9pt; color: #e8ebf3; }
+
+  /* Chapter opener */
+  .opener { border-left: 6pt solid var(--c, var(--accent)); padding: 4pt 0 4pt 14pt; margin: 0 0 14pt; }
+  .opener .kicker { font: 700 8.5pt Inter, sans-serif; letter-spacing: .18em; text-transform: uppercase; color: var(--c, var(--accent)); }
+  .opener p { color: var(--ink-2); font-size: 11pt; margin-top: 4pt; }
+  .L1 { --c: var(--l1); } .L2 { --c: var(--l2); } .L3 { --c: var(--l3); } .L4 { --c: var(--l4); } .L5 { --c: var(--l5); }
+  .L1 h2, .L2 h2, .L3 h2, .L4 h2, .L5 h2 { color: var(--c); }
+
+  /* Boxes */
+  .box { background: var(--tint); border-radius: 6pt; padding: 9pt 12pt; margin: 8pt 0 10pt; break-inside: avoid; }
+  .box.warn { background: #fdf1e4; border-left: 3pt solid var(--accent); }
+  .box.tip  { background: #eef4fb; border-left: 3pt solid var(--l3); }
+  .box h3 { margin-top: 0; }
+  .tag { display: inline-block; font: 600 7.5pt Inter, sans-serif; letter-spacing: .08em; text-transform: uppercase; padding: 1pt 6pt; border-radius: 10pt; background: var(--c, var(--ink)); color: #fff; vertical-align: middle; }
+
+  /* Checklists */
+  ul.check { list-style: none; padding-left: 0; }
+  ul.check li { position: relative; padding-left: 16pt; margin-bottom: 3pt; break-inside: avoid; }
+  ul.check li::before { content: ""; position: absolute; left: 0; top: 2.5pt; width: 8.5pt; height: 8.5pt; border: 1.2pt solid var(--c, var(--ink-2)); border-radius: 2pt; }
+  .cols2 { column-count: 2; column-gap: 14pt; }
+  .cols2 > * { break-inside: avoid; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 6pt 0 12pt; font-size: 9pt; break-inside: auto; }
+  thead { display: table-header-group; }
+  tr { break-inside: avoid; }
+  th { text-align: left; background: var(--ink); color: #fff; font-weight: 600; padding: 4pt 6pt; }
+  .L1 th { background: var(--l1); } .L2 th { background: var(--l2); } .L3 th { background: var(--l3); } .L4 th { background: var(--l4); } .L5 th { background: var(--l5); }
+  td { border-bottom: 1px solid var(--line); padding: 4pt 6pt; vertical-align: top; }
+  td.blank { height: 16pt; }
+  tr:nth-child(even) td { background: #fafafa; }
+
+  /* Fill-in lines */
+  .field { display: flex; gap: 6pt; align-items: flex-end; margin: 5pt 0; }
+  .field label { white-space: nowrap; font-weight: 600; font-size: 9.2pt; }
+  .field .ln { flex: 1; border-bottom: 1px solid #9aa1b2; height: 12pt; }
+  .lines .ln { border-bottom: 1px solid #c3c7d1; height: 17pt; }
+
+  /* Steps */
+  ol.steps { counter-reset: s; list-style: none; padding-left: 0; }
+  ol.steps > li { counter-increment: s; position: relative; padding-left: 26pt; margin-bottom: 7pt; break-inside: avoid; }
+  ol.steps > li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 18pt; height: 18pt; border-radius: 50%; background: var(--c, var(--ink)); color: #fff; font: 700 9pt/18pt Inter, sans-serif; text-align: center; }
+
+  /* TOC */
+  .toc { list-style: none; padding: 0; }
+  .toc li { display: flex; gap: 10pt; padding: 6pt 0; border-bottom: 1px solid var(--line); }
+  .toc .n { font: 700 9pt Inter; color: var(--accent); width: 34pt; }
+  .toc .t { font-weight: 600; }
+  .toc .d { color: var(--muted); font-size: 9pt; }
+
+  .grid5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6pt; margin: 10pt 0; }
+  .grid5 div { border-radius: 6pt; padding: 8pt; color: #fff; font-size: 8.6pt; line-height: 1.35; }
+  .grid5 b { display: block; font-size: 9.5pt; margin-bottom: 2pt; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10pt; }
+  .grid2 > div { break-inside: avoid; }
+  .score { display: inline-block; width: 70pt; text-align: right; color: var(--muted); white-space: nowrap; }
+  .src li { font-size: 8.6pt; color: var(--ink-2); word-break: break-all; }
+</style>
+</head>
+<body>
+
+<!-- ============================ COVER ============================ -->
+<section class="cover">
+  <div class="brand">Khosha Systems · Business Playbook Series</div>
+  <h1>The Pancha Khosha Business Framework</h1>
+  <div class="sub">A practical e-book of checklists, step-by-step guides and fill-in templates to build, run, fund and franchise any business, from first registration to your first investor and first franchisee.</div>
+  <div class="layers">
+    <span>1 · Foundation</span><span>2 · People</span><span>3 · Systems</span><span>4 · Growth</span><span>5 · Scale</span>
+  </div>
+  <svg class="rings" viewBox="0 0 200 200" aria-hidden="true">
+    <circle cx="100" cy="100" r="96" fill="none" stroke="#b8860b" stroke-width="1.4" opacity=".75"/>
+    <circle cx="100" cy="100" r="78" fill="none" stroke="#6a46a8" stroke-width="1.4" opacity=".8"/>
+    <circle cx="100" cy="100" r="60" fill="none" stroke="#2b5fa8" stroke-width="1.4" opacity=".9"/>
+    <circle cx="100" cy="100" r="42" fill="none" stroke="#2f7d4f" stroke-width="1.4"/>
+    <circle cx="100" cy="100" r="24" fill="#8a5a2b" opacity=".9"/>
+  </svg>
+  <div class="foot">Edition 1 · November 2026 · khoshasystems.com<br>Written for founders and small-business owners, with India-first compliance notes and global pointers.</div>
+</section>
+
+<!-- ============================ HOW TO USE ============================ -->
+<section class="page">
+  <div class="opener"><div class="kicker">Start here</div><h1>How to use this book</h1>
+  <p>Most businesses don't fail for lack of a good product. They fail because the operations underneath can't hold the weight of growth. This framework gives you that structure, one layer at a time.</p></div>
+
+  <h2>The five layers (Pancha Khosha)</h2>
+  <p>In Indian philosophy, the <em>Pancha Kosha</em> are the five sheaths of a human being, from the physical body to the innermost layer of fulfilment. At Khosha Systems we use the same idea for companies. A business is healthy only when every layer is healthy, and each layer depends on the one beneath it.</p>
+  <div class="grid5">
+    <div style="background:var(--l1)"><b>1 · Annamaya</b>Foundation. Legal entity, registrations, compliance, books and cash.</div>
+    <div style="background:var(--l2)"><b>2 · Pranamaya</b>People. Hiring, onboarding, attendance, payroll and performance.</div>
+    <div style="background:var(--l3)"><b>3 · Manomaya</b>Systems. SOPs, products and services catalogue, pricing and the digital stack.</div>
+    <div style="background:var(--l4)"><b>4 · Vijnanamaya</b>Growth. Strategy, KPIs, sales pipeline, marketing and the operating rhythm.</div>
+    <div style="background:var(--l5)"><b>5 · Anandamaya</b>Scale. Raising investment, franchising and building a business that lasts.</div>
+  </div>
+
+  <h2>Three ways to use it</h2>
+  <ol class="steps">
+    <li><b>As a diagnostic.</b> Take the 25-point Business Health Scorecard on the next pages. Your lowest-scoring layer is where you start.</li>
+    <li><b>As a checklist binder.</b> Print the chapters you need. Every checklist uses tick boxes (☐) and every template has blank rows you can fill in by hand or copy into a spreadsheet.</li>
+    <li><b>As a digital system.</b> The <code>templates/</code> folder that ships with this book has the same templates as an Excel workbook, CSV files and editable Markdown documents. Load them into Google Sheets, Notion, Zoho or your own software.</li>
+  </ol>
+
+  <div class="box warn">
+    <h3>Important note</h3>
+    <p>This book is general guidance, not legal, tax or investment advice. Indian rules on GST, labour codes, the Startup India scheme and company law change often. Figures here were checked in November 2026. Confirm deadlines, thresholds and contract terms with your Chartered Accountant, Company Secretary or lawyer before acting. Outside India, use the checklists as a structure and swap in your local rules.</p>
+  </div>
+
+  <h2>Contents</h2>
+  <ul class="toc">
+    <li><span class="n">00</span><span><span class="t">Business Health Scorecard</span><br><span class="d">25 questions to find your weakest layer</span></span></li>
+    <li><span class="n">01</span><span><span class="t">Foundation: legal, compliance and books</span><br><span class="d">Entity choice, registrations, chart of accounts, bookkeeping routine, compliance calendar, cash-flow template</span></span></li>
+    <li><span class="n">02</span><span><span class="t">People: hiring, onboarding and attendance</span><br><span class="d">Hiring process, appointment-letter checklist, onboarding (pre-boarding to Day 90), attendance and leave, payroll, reviews, exits</span></span></li>
+    <li><span class="n">03</span><span><span class="t">Systems: SOPs, products and services</span><br><span class="d">SOP template, value ladder, 40+ product and service ideas, catalogue and pricing templates, digital stack</span></span></li>
+    <li><span class="n">04</span><span><span class="t">Growth: strategy, KPIs, sales and marketing</span><br><span class="d">One-page plan, KPI dashboard, sales pipeline, marketing calendar, meeting rhythm</span></span></li>
+    <li><span class="n">05</span><span><span class="t">Scale I: getting investors</span><br><span class="d">Funding options, investor-readiness checklist, 12-step raise, pitch deck, data room, term-sheet glossary, cap table</span></span></li>
+    <li><span class="n">06</span><span><span class="t">Scale II: starting your own franchise</span><br><span class="d">Readiness test, franchise models, 12 steps, fees and unit economics, operations manual, agreement checklist</span></span></li>
+    <li><span class="n">07</span><span><span class="t">Your 90-day implementation roadmap</span><br><span class="d">Plus the template index, sources and About Khosha Systems</span></span></li>
+  </ul>
+</section>
+
+<!-- ============================ SCORECARD ============================ -->
+<section class="page">
+  <div class="opener"><div class="kicker">Chapter 00</div><h1>Business Health Scorecard</h1>
+  <p>Score each statement: <b>0</b> = not true, <b>1</b> = partly true, <b>2</b> = fully true. Add up each layer (maximum 10). Repeat every quarter.</p></div>
+
+  <div class="L1"><h3 style="color:var(--l1)">Layer 1 · Foundation</h3>
+  <table><thead><tr><th>Statement</th><th style="width:70pt">Score (0–2)</th></tr></thead><tbody>
+    <tr><td>My business is registered as the right legal entity, with all licences current.</td><td></td></tr>
+    <tr><td>Business and personal money are in separate bank accounts.</td><td></td></tr>
+    <tr><td>Books are updated at least weekly and reconciled with the bank every month.</td><td></td></tr>
+    <tr><td>I know every statutory deadline (GST, TDS, PF/ESI, ROC) and haven't paid a late fee in 12 months.</td><td></td></tr>
+    <tr><td>I can see my cash position for the next 13 weeks.</td><td></td></tr>
+    <tr><td><b>Layer 1 total (out of 10)</b></td><td></td></tr>
+  </tbody></table></div>
+
+  <div class="L2"><h3 style="color:var(--l2)">Layer 2 · People</h3>
+  <table><thead><tr><th>Statement</th><th style="width:70pt">Score (0–2)</th></tr></thead><tbody>
+    <tr><td>Every role has a written job description and every employee has an appointment letter.</td><td></td></tr>
+    <tr><td>New hires follow a documented onboarding plan and are productive within 30 days.</td><td></td></tr>
+    <tr><td>Attendance and leave are recorded digitally and feed straight into payroll.</td><td></td></tr>
+    <tr><td>Each person has clear goals and gets a structured review at least twice a year.</td><td></td></tr>
+    <tr><td>The business can run for two weeks without me.</td><td></td></tr>
+    <tr><td><b>Layer 2 total (out of 10)</b></td><td></td></tr>
+  </tbody></table></div>
+
+  <div class="L3"><h3 style="color:var(--l3)">Layer 3 · Systems</h3>
+  <table><thead><tr><th>Statement</th><th style="width:70pt">Score (0–2)</th></tr></thead><tbody>
+    <tr><td>Our top 10 recurring tasks are written down as SOPs.</td><td></td></tr>
+    <tr><td>We have a written catalogue of products and services with prices and margins.</td><td></td></tr>
+    <tr><td>Customer, sales and inventory data live in one system, not scattered across spreadsheets and WhatsApp.</td><td></td></tr>
+    <tr><td>We earn some recurring revenue (subscriptions, AMCs, retainers).</td><td></td></tr>
+    <tr><td>We use automation for at least one repetitive process (billing, reminders, reports).</td><td></td></tr>
+    <tr><td><b>Layer 3 total (out of 10)</b></td><td></td></tr>
+  </tbody></table></div>
+
+  <div class="L4"><h3 style="color:var(--l4)">Layer 4 · Growth</h3>
+  <table><thead><tr><th>Statement</th><th style="width:70pt">Score (0–2)</th></tr></thead><tbody>
+    <tr><td>We have a written one-page plan with 12-month and 90-day goals.</td><td></td></tr>
+    <tr><td>We review 5–10 KPIs every week.</td><td></td></tr>
+    <tr><td>We know our customer acquisition cost and customer lifetime value.</td><td></td></tr>
+    <tr><td>Every lead is tracked through defined pipeline stages until it closes.</td><td></td></tr>
+    <tr><td>We run a planned marketing calendar, not ad-hoc posts.</td><td></td></tr>
+    <tr><td><b>Layer 4 total (out of 10)</b></td><td></td></tr>
+  </tbody></table></div>
+
+  <div class="L5"><h3 style="color:var(--l5)">Layer 5 · Scale</h3>
+  <table><thead><tr><th>Statement</th><th style="width:70pt">Score (0–2)</th></tr></thead><tbody>
+    <tr><td>Our financials could pass an investor's due diligence today.</td><td></td></tr>
+    <tr><td>Our brand name and logo are trademarked.</td><td></td></tr>
+    <tr><td>Our cap table and shareholder agreements are clean and documented.</td><td></td></tr>
+    <tr><td>One unit or location is profitable and could be copied by someone else using our manuals.</td><td></td></tr>
+    <tr><td>We have a written 3-year vision and a funding or expansion strategy.</td><td></td></tr>
+    <tr><td><b>Layer 5 total (out of 10)</b></td><td></td></tr>
+  </tbody></table></div>
+
+  <div class="box"><b>Reading your score.</b> 0–4 in a layer: urgent, fix this first. 5–7: functional but fragile. 8–10: strong. Work from the bottom layer up. A franchise built on messy books, or a funding round built on an undocumented team, will crack.</div>
+</section>
+
+<!-- ============================ LAYER 1 ============================ -->
+<section class="page L1">
+  <div class="opener"><div class="kicker">Chapter 01 · Annamaya · Foundation</div><h1>Legal, compliance and books</h1>
+  <p>The physical body of your business: the entity that owns everything, the licences that let you trade, and the books that tell you the truth.</p></div>
+
+  <h2>1.1 Choose the right legal structure</h2>
+  <table><thead><tr><th>Structure</th><th>Best for</th><th>Liability</th><th>Can raise equity?</th><th>Compliance load</th></tr></thead><tbody>
+    <tr><td><b>Sole proprietorship</b></td><td>Solo trader or freelancer testing an idea</td><td>Unlimited (personal)</td><td>No</td><td>Lowest</td></tr>
+    <tr><td><b>Partnership firm</b></td><td>Small family or trading businesses</td><td>Unlimited, joint</td><td>No</td><td>Low</td></tr>
+    <tr><td><b>LLP</b></td><td>Professional services, agencies, consultancies</td><td>Limited</td><td>Limited (no shares; VCs rarely invest)</td><td>Moderate</td></tr>
+    <tr><td><b>One Person Company (OPC)</b></td><td>Solo founder who wants limited liability</td><td>Limited</td><td>Must convert first</td><td>Moderate</td></tr>
+    <tr><td><b>Private Limited Company</b></td><td>Anyone planning to raise investment, offer ESOPs or franchise at scale</td><td>Limited</td><td>Yes (the investor standard)</td><td>Highest</td></tr>
+  </tbody></table>
+  <div class="box tip"><b>Rule of thumb:</b> if you plan to raise outside capital within 24 months, start as a Private Limited Company. Converting later costs time and money and can trigger tax questions.</div>
+
+  <h2>1.2 Registration and licence checklist (India)</h2>
+  <div class="cols2">
+  <ul class="check">
+    <li>Entity incorporation (MCA SPICe+ for companies, FiLLiP for LLPs)</li>
+    <li>PAN and TAN for the entity</li>
+    <li>Current bank account in the business name</li>
+    <li>GST registration: mandatory once turnover crosses ₹40 lakh (goods) or ₹20 lakh (services), with lower limits in special-category states. Required from day one for inter-state supply of goods and most e-commerce selling</li>
+    <li>Shops &amp; Establishment registration (state law, usually within 30 days of opening)</li>
+    <li>Professional Tax registration (in states that levy it, such as Karnataka and Maharashtra)</li>
+    <li>Udyam (MSME) registration: free, and unlocks priority lending and delayed-payment protection</li>
+    <li>EPF registration once you have 20 or more employees</li>
+    <li>ESI registration once you have 10 or more employees (wage ceiling applies)</li>
+    <li>Trademark application for brand name and logo (Class-wise, via IP India)</li>
+    <li>Industry licences: FSSAI (food), Drug licence, Trade licence, IEC (import/export), RERA (real estate), and so on</li>
+    <li>DPIIT Startup India recognition, if you qualify (see Chapter 05)</li>
+    <li>Domain name, business email and a basic website</li>
+    <li>Founders' agreement (vesting, roles, IP assignment, exit terms)</li>
+  </ul>
+  </div>
+
+  <h2>1.3 Set up your books</h2>
+  <p>Use cloud accounting software (Zoho Books, Tally Prime, QuickBooks or similar) from day one. Start with this simplified chart of accounts and add sub-accounts only when you need them.</p>
+  <table><thead><tr><th>Code</th><th>Group</th><th>Typical accounts</th></tr></thead><tbody>
+    <tr><td>1000</td><td>Assets</td><td>Bank accounts, cash, accounts receivable, inventory, GST input credit, TDS receivable, security deposits, fixed assets</td></tr>
+    <tr><td>2000</td><td>Liabilities</td><td>Accounts payable, GST output payable, TDS payable, PF/ESI payable, salaries payable, loans, customer advances</td></tr>
+    <tr><td>3000</td><td>Equity</td><td>Share capital or partner capital, reserves and surplus, drawings</td></tr>
+    <tr><td>4000</td><td>Income</td><td>Product sales, service income, subscription income, franchise fees, royalty, other income</td></tr>
+    <tr><td>5000</td><td>Direct costs</td><td>Purchases, raw material, direct labour, freight inward, payment gateway fees</td></tr>
+    <tr><td>6000</td><td>Operating expenses</td><td>Salaries, rent, utilities, software, marketing, travel, professional fees, repairs, insurance</td></tr>
+    <tr><td>7000</td><td>Finance and other</td><td>Interest, bank charges, depreciation, income tax</td></tr>
+  </tbody></table>
+
+  <h2>1.4 The bookkeeping routine</h2>
+  <div class="grid2">
+    <div><h3>Daily (10 minutes)</h3><ul class="check">
+      <li>Raise invoices for everything delivered today</li>
+      <li>Record cash sales and petty cash</li>
+      <li>Upload bills and receipts (photograph them)</li>
+      <li>Check the bank balance against expected receipts</li></ul>
+    <h3>Weekly (30 minutes)</h3><ul class="check">
+      <li>Categorise all bank transactions</li>
+      <li>Send payment reminders for overdue invoices</li>
+      <li>Schedule vendor payments</li>
+      <li>Update the 13-week cash-flow forecast</li></ul></div>
+    <div><h3>Monthly (half a day)</h3><ul class="check">
+      <li>Reconcile every bank and card account</li>
+      <li>Run payroll and deduct TDS, PF, ESI and PT</li>
+      <li>Pay statutory dues and file GST returns</li>
+      <li>Review the P&amp;L, balance sheet and receivables ageing</li>
+      <li>Compare actuals to budget</li></ul>
+    <h3>Annually</h3><ul class="check">
+      <li>Physical inventory and fixed-asset count</li>
+      <li>Statutory audit (companies) and tax audit (if applicable)</li>
+      <li>Income-tax return, ROC annual filings</li>
+      <li>Set next year's budget and pricing</li></ul></div>
+  </div>
+
+  <h2>1.5 Compliance calendar (India, standard due dates)</h2>
+  <table><thead><tr><th>When</th><th>What</th><th>Who it applies to</th></tr></thead><tbody>
+    <tr><td>7th of every month</td><td>Deposit TDS/TCS deducted in the previous month (March TDS is due 30 April)</td><td>Anyone deducting TDS</td></tr>
+    <tr><td>11th of every month</td><td>GSTR-1 (outward supplies). Quarterly under QRMP if eligible</td><td>GST-registered businesses</td></tr>
+    <tr><td>15th of every month</td><td>EPF and ESI contributions</td><td>Employers registered under EPF/ESI</td></tr>
+    <tr><td>20th of every month</td><td>GSTR-3B summary return and tax payment (staggered 22nd/24th for QRMP filers)</td><td>GST-registered businesses</td></tr>
+    <tr><td>15 Jun · 15 Sep · 15 Dec · 15 Mar</td><td>Advance tax instalments (15% · 45% · 75% · 100%)</td><td>Businesses with tax liability above ₹10,000</td></tr>
+    <tr><td>31 Jul · 31 Oct · 31 Jan · 31 May</td><td>Quarterly TDS returns (24Q salaries, 26Q others)</td><td>TDS deductors</td></tr>
+    <tr><td>30 May / 30 Oct</td><td>LLP Form 11 (annual return) / Form 8 (accounts and solvency)</td><td>LLPs</td></tr>
+    <tr><td>By 30 Sep</td><td>Annual General Meeting; DIR-3 KYC for directors; tax audit report</td><td>Companies; directors; audited businesses</td></tr>
+    <tr><td>Within 30 / 60 days of AGM</td><td>AOC-4 (financial statements) / MGT-7 (annual return)</td><td>Companies</td></tr>
+    <tr><td>31 Jul / 31 Oct</td><td>Income-tax return (non-audit / audit cases)</td><td>All taxpayers</td></tr>
+    <tr><td>31 Dec</td><td>GSTR-9 annual return (and 9C where applicable)</td><td>GST-registered businesses above the threshold</td></tr>
+  </tbody></table>
+  <p class="muted">Dates are statutory defaults. The government often extends them, and state Professional Tax dates vary. Ask your CA to load these into a shared calendar with reminders 5 days ahead.</p>
+
+  <h2>1.6 Invoice must-haves (GST)</h2>
+  <ul class="check cols2">
+    <li>Supplier name, address, GSTIN</li>
+    <li>Unique, consecutive invoice number (max 16 characters) and date</li>
+    <li>Customer name, address and GSTIN (for B2B)</li>
+    <li>Place of supply (state)</li>
+    <li>HSN code (goods) or SAC code (services)</li>
+    <li>Description, quantity, unit, rate</li>
+    <li>Taxable value, discounts</li>
+    <li>CGST + SGST, or IGST, with rates and amounts</li>
+    <li>Whether reverse charge applies</li>
+    <li>Signature or digital signature</li>
+    <li>E-invoice IRN and QR code (if your turnover requires it)</li>
+    <li>Bank details and payment terms</li>
+  </ul>
+
+  <h2>1.7 Template: 13-week cash-flow forecast</h2>
+  <table><thead><tr><th style="width:30%">Line</th><th>Wk 1</th><th>Wk 2</th><th>Wk 3</th><th>Wk 4</th><th>Wk 5</th><th>Wk 6</th><th>…</th><th>Wk 13</th></tr></thead><tbody>
+    <tr><td><b>Opening cash</b></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>+ Customer receipts</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>+ Other inflows (loans, capital)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>− Salaries and contractors</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>− Rent and utilities</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>− Suppliers and inventory</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>− Taxes (GST, TDS, advance tax)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>− Loan EMIs and other</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td><b>Closing cash</b></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+  </tbody></table>
+  <div class="box tip"><b>Target:</b> keep closing cash above three months of fixed costs. If a week dips below that, act now: chase receivables, delay non-critical spending, or arrange a working-capital line before you need it.</div>
+</section>
+
+<!-- ============================ LAYER 2 ============================ -->
+<section class="page L2">
+  <div class="opener"><div class="kicker">Chapter 02 · Pranamaya · People</div><h1>Hiring, onboarding and attendance</h1>
+  <p>The life force of your business. Good systems let ordinary people do extraordinary work, and good onboarding decides whether a hire stays three years or three weeks.</p></div>
+
+  <h2>2.1 The 8-step hiring process</h2>
+  <ol class="steps">
+    <li><b>Define the role.</b> Write the outcomes the role owns in its first 12 months, not just a task list. Set the salary band before you advertise.</li>
+    <li><b>Write the job description:</b> purpose, 5–7 key responsibilities, must-have and nice-to-have skills, location, salary range, and how to apply.</li>
+    <li><b>Source</b> through referrals first (they're the most reliable), then job portals, LinkedIn, campus and local networks.</li>
+    <li><b>Screen</b> with a 15-minute phone call on motivation, salary expectations, notice period and deal-breakers.</li>
+    <li><b>Assess</b> with a paid or short practical task that mirrors the real job.</li>
+    <li><b>Interview</b> with a structured scorecard (same questions, scored 1–5) and at least two interviewers.</li>
+    <li><b>Check references</b> (two minimum) and verify documents and background.</li>
+    <li><b>Offer</b> in writing, then issue the appointment letter on joining.</li>
+  </ol>
+
+  <h2>2.2 Appointment letter checklist</h2>
+  <p>India's four Labour Codes came into force on 21 November 2025, replacing 29 older central labour laws. One visible change: the OSH Code requires employers to give <b>every</b> employee an appointment letter, including fixed-term and contract staff. Make sure each letter covers:</p>
+  <ul class="check cols2">
+    <li>Employee name, designation and employee ID</li>
+    <li>Date of joining and place of work</li>
+    <li>Category: permanent, probation, fixed-term or contract</li>
+    <li>Wages: basic pay, allowances, CTC breakdown</li>
+    <li>Wage structure checked against the Codes' 50% "wages" rule for PF and gratuity</li>
+    <li>Working hours, weekly off, overtime terms</li>
+    <li>Leave entitlements</li>
+    <li>Probation period and confirmation process</li>
+    <li>Notice period and termination terms</li>
+    <li>Social security: PF, ESI, gratuity, insurance</li>
+    <li>Confidentiality, IP assignment and code of conduct</li>
+    <li>Reporting manager and grievance mechanism</li>
+  </ul>
+  <p class="muted">State rules under the Codes were still being notified through 2026. Have an employment lawyer check your template.</p>
+
+  <h2>2.3 New employee onboarding checklist</h2>
+  <div class="grid2">
+  <div>
+    <h3><span class="tag">Pre-boarding</span> Before Day 1</h3>
+    <ul class="check">
+      <li>Send the offer letter and get it signed</li>
+      <li>Collect documents: ID and address proof, PAN, Aadhaar (with consent), education and experience certificates, relieving letter, last 3 payslips, bank details, photo, emergency contact, UAN (if any)</li>
+      <li>Do background and reference checks</li>
+      <li>Create email, software logins and access cards</li>
+      <li>Prepare laptop, desk, ID card, visiting cards and uniform</li>
+      <li>Assign a buddy (a peer, not their manager)</li>
+      <li>Share a welcome email: time, place, dress code, Day 1 agenda</li>
+      <li>Tell the team who is joining and why</li>
+    </ul>
+    <h3><span class="tag">Day 1</span> Welcome</h3>
+    <ul class="check">
+      <li>Founder or manager welcome. Explain the company story, mission and values</li>
+      <li>Office tour and introductions</li>
+      <li>Issue the appointment letter and get policies acknowledged</li>
+      <li>Fill in PF/ESI nomination forms and enrol for insurance</li>
+      <li>Set up all tools and test logins</li>
+      <li>Walk through the 30/60/90 plan</li>
+      <li>Team lunch</li>
+      <li>End-of-day check-in: "What questions do you have?"</li>
+    </ul>
+  </div>
+  <div>
+    <h3><span class="tag">Week 1</span> Learn</h3>
+    <ul class="check">
+      <li>Training on products and services and the top 5 customer problems</li>
+      <li>Read the SOPs for their role</li>
+      <li>Shadow a senior colleague for 2–3 days</li>
+      <li>Complete one small, real deliverable</li>
+      <li>Meet key cross-functional people</li>
+      <li>Week-1 feedback conversation with the manager</li>
+    </ul>
+    <h3><span class="tag">30 · 60 · 90</span> Ramp</h3>
+    <ul class="check">
+      <li><b>Day 30:</b> knows the products, tools and processes; owns small tasks independently</li>
+      <li><b>Day 60:</b> owns a full workflow; contributes ideas; KPIs agreed</li>
+      <li><b>Day 90:</b> fully productive against KPIs; probation review; confirmation decision</li>
+      <li>Onboarding survey: what should we improve?</li>
+    </ul>
+    <div class="box"><b>Onboarding owner:</b> <span class="muted">________________</span><br><b>Buddy:</b> <span class="muted">________________</span><br><b>Start date:</b> <span class="muted">________________</span><br><b>Probation ends:</b> <span class="muted">________________</span></div>
+  </div>
+  </div>
+
+  <h2>2.4 Attendance and leave policy (template)</h2>
+  <div class="box">
+    <p><b>1. Working hours.</b> Our working hours are <u>&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;</u> to <u>&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;</u>, <u>&nbsp;&nbsp;&nbsp;</u> days a week, with a <u>&nbsp;&nbsp;&nbsp;</u>-minute break. The weekly off is <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>.</p>
+    <p><b>2. Recording attendance.</b> Employees mark attendance through <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> (biometric, mobile app with geo-tag, or web check-in). Grace time is <u>&nbsp;&nbsp;&nbsp;</u> minutes. Three late marks in a month count as half a day of leave.</p>
+    <p><b>3. Leave types.</b> Earned/privilege leave <u>&nbsp;&nbsp;&nbsp;</u> days a year; casual leave <u>&nbsp;&nbsp;&nbsp;</u>; sick leave <u>&nbsp;&nbsp;&nbsp;</u>; public holidays <u>&nbsp;&nbsp;&nbsp;</u>; maternity leave as per law; bereavement <u>&nbsp;&nbsp;&nbsp;</u>. Leave must be applied for <u>&nbsp;&nbsp;&nbsp;</u> days ahead, except sick leave.</p>
+    <p><b>4. Carry-forward and encashment.</b> Up to <u>&nbsp;&nbsp;&nbsp;</u> days of earned leave carry forward; the rest is encashed or lapses as per law.</p>
+    <p><b>5. Remote work, field work and overtime</b> need manager approval in the system. Overtime is paid at twice the ordinary wage rate where the law requires.</p>
+    <p><b>6. Unauthorised absence</b> of <u>&nbsp;&nbsp;&nbsp;</u> or more consecutive days without notice will lead to disciplinary action.</p>
+  </div>
+
+  <h3>Monthly attendance register</h3>
+  <table><thead><tr><th>Emp ID</th><th>Name</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>…</th><th>31</th><th>P</th><th>A</th><th>L</th><th>H/WO</th><th>OT hrs</th></tr></thead><tbody>
+    <tr><td class="blank"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td class="blank"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td class="blank"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+  </tbody></table>
+  <p class="muted">Codes: P = present · A = absent · L = leave (CL/SL/EL) · HD = half day · WO = weekly off · H = holiday · WFH = work from home. The workbook version counts these automatically.</p>
+
+  <h2>2.5 Monthly payroll checklist</h2>
+  <ul class="check cols2">
+    <li>Lock attendance and leave by the 25th</li>
+    <li>Add new joiners and exits, revisions, bonuses and reimbursements</li>
+    <li>Calculate gross pay, then deduct PF, ESI, Professional Tax and TDS on salary</li>
+    <li>Check investment declarations for TDS</li>
+    <li>Get approval and pay salaries by the date in your policy</li>
+    <li>Email payslips</li>
+    <li>Deposit PF/ESI by the 15th and TDS by the 7th</li>
+    <li>Book the payroll journal entry</li>
+  </ul>
+
+  <h2>2.6 Performance review template</h2>
+  <table><thead><tr><th>Area</th><th>Goal / KPI</th><th>Self rating (1–5)</th><th>Manager rating (1–5)</th><th>Evidence and comments</th></tr></thead><tbody>
+    <tr><td>Results</td><td class="blank"></td><td></td><td></td><td></td></tr>
+    <tr><td>Quality of work</td><td class="blank"></td><td></td><td></td><td></td></tr>
+    <tr><td>Customer focus</td><td class="blank"></td><td></td><td></td><td></td></tr>
+    <tr><td>Teamwork and values</td><td class="blank"></td><td></td><td></td><td></td></tr>
+    <tr><td>Learning and growth</td><td class="blank"></td><td></td><td></td><td></td></tr>
+  </tbody></table>
+  <p>End every review with three things: <b>keep doing</b>, <b>start doing</b>, <b>stop doing</b>. Agree on goals for the next cycle.</p>
+
+  <h2>2.7 Exit (offboarding) checklist</h2>
+  <ul class="check cols2">
+    <li>Accept the resignation in writing and confirm the last working day</li>
+    <li>Agree a knowledge-transfer plan and handover document</li>
+    <li>Recover laptop, ID card, keys and documents</li>
+    <li>Revoke all system access on the last day</li>
+    <li>Exit interview: why are they leaving?</li>
+    <li>Full and final settlement (now due within 2 working days of exit under the Code on Wages)</li>
+    <li>Issue relieving and experience letters</li>
+    <li>Pay gratuity where eligible; issue Form 16</li>
+  </ul>
+</section>
+
+<!-- ============================ LAYER 3 ============================ -->
+<section class="page L3">
+  <div class="opener"><div class="kicker">Chapter 03 · Manomaya · Systems</div><h1>SOPs, products and services</h1>
+  <p>The mind of your business: how work gets done, what you sell, and the software that holds it together. Systems are what let you step back from day-to-day work, and later what you sell to investors and franchisees.</p></div>
+
+  <h2>3.1 How to write an SOP in 7 steps</h2>
+  <ol class="steps">
+    <li>List every recurring task. Rank them by frequency × cost of a mistake. Document the top 10 first.</li>
+    <li>Record the best person doing the task: a screen recording or phone video with narration.</li>
+    <li>Turn it into numbered steps, each starting with a verb ("Open…", "Check…", "Send…").</li>
+    <li>Add screenshots, the trigger (when it starts), the owner, and what "done" looks like.</li>
+    <li>Test it: someone new follows the SOP alone. Fix wherever they get stuck.</li>
+    <li>Store all SOPs in one searchable place (Notion, Google Drive or your intranet).</li>
+    <li>Review every SOP every 6 months, or whenever the process or tool changes.</li>
+  </ol>
+  <div class="box">
+    <h3>SOP template</h3>
+    <div class="field"><label>SOP title &amp; ID:</label><div class="ln"></div></div>
+    <div class="field"><label>Purpose (why this matters):</label><div class="ln"></div></div>
+    <div class="field"><label>Owner:</label><div class="ln"></div><label>Frequency:</label><div class="ln"></div></div>
+    <div class="field"><label>Trigger (when it starts):</label><div class="ln"></div></div>
+    <div class="field"><label>Tools / inputs needed:</label><div class="ln"></div></div>
+    <div class="field"><label>Steps 1–10:</label><div class="ln"></div></div>
+    <div class="lines"><div class="ln"></div><div class="ln"></div><div class="ln"></div></div>
+    <div class="field"><label>Definition of done / quality check:</label><div class="ln"></div></div>
+    <div class="field"><label>Common mistakes and fixes:</label><div class="ln"></div></div>
+    <div class="field"><label>Version · last reviewed · approved by:</label><div class="ln"></div></div>
+  </div>
+
+  <h2>3.2 The value ladder: what a business can offer</h2>
+  <p>Most small businesses sell one thing at one price. Stronger businesses build a <b>ladder</b> of offers that takes a stranger to a loyal, recurring customer. Use the table to design yours.</p>
+  <table><thead><tr><th>Rung</th><th>Purpose</th><th>Examples</th></tr></thead><tbody>
+    <tr><td><b>1. Free value</b></td><td>Attract and build trust</td><td>Free checklist or guide, consultation, demo, sample, audit, workshop, calculator</td></tr>
+    <tr><td><b>2. Entry offer</b></td><td>Turn strangers into customers at low risk</td><td>Trial pack, starter plan, diagnostic report, single session, small first order</td></tr>
+    <tr><td><b>3. Core offer</b></td><td>Your main revenue</td><td>Main product range, standard service package, project delivery</td></tr>
+    <tr><td><b>4. Upsells and add-ons</b></td><td>Raise average order value</td><td>Premium version, installation, express delivery, extended warranty, accessories, priority support</td></tr>
+    <tr><td><b>5. Recurring revenue</b></td><td>Predictable cash flow, which investors value highly</td><td>Subscription, membership, AMC, retainer, SaaS licence, refill plan</td></tr>
+    <tr><td><b>6. High-ticket</b></td><td>Highest margin, fewest clients</td><td>Done-for-you service, enterprise contract, custom build, consulting</td></tr>
+    <tr><td><b>7. Leverage offers</b></td><td>Earn from your know-how without more hours</td><td>Training and certification, licensing, franchising, white-label, marketplace, courses</td></tr>
+  </tbody></table>
+
+  <h2>3.3 Product and service ideas by industry</h2>
+  <table><thead><tr><th style="width:18%">Industry</th><th>Products</th><th>Services and recurring revenue ideas</th></tr></thead><tbody>
+    <tr><td><b>Retail / mobile and electronics</b></td><td>Devices, accessories, refurbished stock, own-label accessories</td><td>Extended warranty, screen-protection plans, repairs, buy-back and exchange, EMI tie-ups, data transfer, corporate gifting</td></tr>
+    <tr><td><b>Food and beverage</b></td><td>Packaged sauces, mixes, gift hampers, frozen range</td><td>Catering, subscription tiffin, cooking classes, cloud-kitchen brands, franchise outlets</td></tr>
+    <tr><td><b>Real estate</b></td><td>Plots, apartments, commercial units</td><td>Property management, rental management, interior packages, home-loan assistance, resale desk, NRI services</td></tr>
+    <tr><td><b>Professional services</b> (CA, legal, consulting)</td><td>Templates, toolkits, e-books</td><td>Monthly compliance retainers, virtual CFO, audits, training workshops, white-labelled services for other firms</td></tr>
+    <tr><td><b>Health and wellness</b></td><td>Supplements, equipment, own-brand products</td><td>Memberships, packages, corporate wellness, online coaching, diagnostics partnerships</td></tr>
+    <tr><td><b>Education and training</b></td><td>Books, kits, recorded courses</td><td>Cohort programmes, certification, placement services, B2B corporate training, franchise centres</td></tr>
+    <tr><td><b>Manufacturing / B2B</b></td><td>Core SKUs, spares, custom builds</td><td>AMC, installation, operator training, consumables subscription, private-label manufacturing</td></tr>
+    <tr><td><b>Beauty and salons</b></td><td>Own-brand skincare and hair products</td><td>Membership packages, bridal packages, academy, home services, franchise</td></tr>
+    <tr><td><b>Tech / agency</b></td><td>SaaS, templates, plugins</td><td>Retainers, maintenance AMC, AI automation, training, white-label development</td></tr>
+  </tbody></table>
+
+  <h2>3.4 Template: product and services catalogue</h2>
+  <table><thead><tr><th>SKU / code</th><th>Name</th><th>Type</th><th>Description and who it's for</th><th>Unit</th><th>Cost</th><th>Price</th><th>Margin %</th><th>HSN/SAC · GST %</th></tr></thead><tbody>
+    <tr><td class="blank"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td class="blank"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td class="blank"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td class="blank"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+  </tbody></table>
+
+  <h2>3.5 Pricing worksheet</h2>
+  <div class="grid2">
+    <div class="box">
+      <h3>Cost-plus floor</h3>
+      <div class="field"><label>Direct cost per unit (A):</label><div class="ln"></div></div>
+      <div class="field"><label>Share of overheads per unit (B):</label><div class="ln"></div></div>
+      <div class="field"><label>Target margin % (M):</label><div class="ln"></div></div>
+      <div class="field"><label>Floor price = (A + B) ÷ (1 − M):</label><div class="ln"></div></div>
+    </div>
+    <div class="box">
+      <h3>Value ceiling</h3>
+      <div class="field"><label>Competitor price range:</label><div class="ln"></div></div>
+      <div class="field"><label>Value created for the customer (₹):</label><div class="ln"></div></div>
+      <div class="field"><label>Our differentiator:</label><div class="ln"></div></div>
+      <div class="field"><label>Final price (floor ≤ price ≤ ceiling):</label><div class="ln"></div></div>
+    </div>
+  </div>
+  <p><b>Good-better-best:</b> offer three tiers. Most buyers pick the middle one, so design it to be the one you most want to sell.</p>
+
+  <h2>3.6 Your digital stack</h2>
+  <p>Replace scattered spreadsheets and WhatsApp threads with connected systems. At minimum you need one tool for each row, and they should share data.</p>
+  <table><thead><tr><th>Function</th><th>What it does</th><th>Example tools</th></tr></thead><tbody>
+    <tr><td>Accounting and GST</td><td>Invoices, bills, GST returns, bank reconciliation</td><td>Zoho Books, Tally Prime, QuickBooks</td></tr>
+    <tr><td>HR and payroll</td><td>Attendance, leave, payroll, statutory compliance</td><td>Zoho People/Payroll, greytHR, Keka, RazorpayX Payroll</td></tr>
+    <tr><td>CRM and sales</td><td>Leads, pipeline, follow-ups, quotes</td><td>Zoho CRM, HubSpot, an industry-specific CRM</td></tr>
+    <tr><td>Point of sale and inventory</td><td>Billing, stock, serial/IMEI tracking</td><td>Industry POS, retail OS</td></tr>
+    <tr><td>Communication</td><td>Team chat, customer messaging</td><td>Slack / Google Chat, WhatsApp Business API</td></tr>
+    <tr><td>Documents and SOPs</td><td>Wiki, file storage, e-signatures</td><td>Notion, Google Workspace, DocuSign / Leegality</td></tr>
+    <tr><td>Automation and AI</td><td>Connect tools, automate reminders, reports and replies</td><td>Zapier, Make, custom AI agents</td></tr>
+  </tbody></table>
+  <div class="box tip"><b>Where Khosha Systems fits.</b> We build vertically integrated systems that replace patchwork tools: <b>RetailerOS</b> for mobile and electronics retailers (IMEI tracking, scheme management, GST billing, analytics), a <b>Real Estate CRM</b> (portal lead capture, site visits, channel-partner portal, document vault), a <b>Visitor Management System</b> (QR and tablet check-in, WhatsApp and SMS host alerts, RERA-compliant logs), plus custom workforce tools and AI automation for everything else.</div>
+</section>
+
+<!-- ============================ LAYER 4 ============================ -->
+<section class="page L4">
+  <div class="opener"><div class="kicker">Chapter 04 · Vijnanamaya · Growth</div><h1>Strategy, KPIs, sales and marketing</h1>
+  <p>The wisdom layer: knowing where you're going, measuring whether you're getting there, and running a steady rhythm that turns plans into results.</p></div>
+
+  <h2>4.1 One-page business plan</h2>
+  <table><thead><tr><th style="width:28%">Section</th><th>Your answer</th></tr></thead><tbody>
+    <tr><td>Purpose: why we exist</td><td class="blank"></td></tr>
+    <tr><td>Target customer: who exactly</td><td class="blank"></td></tr>
+    <tr><td>Problem we solve</td><td class="blank"></td></tr>
+    <tr><td>Our offer and why it's better</td><td class="blank"></td></tr>
+    <tr><td>3-year vision: revenue, team, locations</td><td class="blank"></td></tr>
+    <tr><td>12-month goals (3 max)</td><td class="blank"></td></tr>
+    <tr><td>This quarter's priorities (3–5 "rocks")</td><td class="blank"></td></tr>
+    <tr><td>Key numbers we track</td><td class="blank"></td></tr>
+    <tr><td>Biggest risks and how we'll handle them</td><td class="blank"></td></tr>
+  </tbody></table>
+
+  <h2>4.2 KPI dashboard: pick 5–10</h2>
+  <table><thead><tr><th>KPI</th><th>Formula</th><th>Why it matters</th><th>Target</th><th>This week</th></tr></thead><tbody>
+    <tr><td>Revenue</td><td>Total invoiced sales</td><td>Top-line growth</td><td></td><td></td></tr>
+    <tr><td>Gross margin %</td><td>(Revenue − direct costs) ÷ revenue</td><td>Pricing power and efficiency</td><td></td><td></td></tr>
+    <tr><td>Cash runway</td><td>Cash ÷ monthly net burn</td><td>How long you can survive</td><td></td><td></td></tr>
+    <tr><td>Leads → customers</td><td>New customers ÷ new leads</td><td>Sales effectiveness</td><td></td><td></td></tr>
+    <tr><td>CAC</td><td>Sales and marketing spend ÷ new customers</td><td>Cost to win a customer</td><td></td><td></td></tr>
+    <tr><td>LTV</td><td>Average order × orders a year × years retained × margin</td><td>Value of a customer. Aim for LTV ≥ 3 × CAC</td><td></td><td></td></tr>
+    <tr><td>Receivable days (DSO)</td><td>Receivables ÷ revenue × 365</td><td>How fast you get paid</td><td></td><td></td></tr>
+    <tr><td>Repeat or retention rate</td><td>Returning customers ÷ total customers</td><td>Loyalty and product fit</td><td></td><td></td></tr>
+    <tr><td>NPS</td><td>% promoters − % detractors</td><td>Customer happiness</td><td></td><td></td></tr>
+    <tr><td>Revenue per employee</td><td>Revenue ÷ headcount</td><td>Productivity</td><td></td><td></td></tr>
+  </tbody></table>
+
+  <h2>4.3 Sales pipeline stages</h2>
+  <table><thead><tr><th>Stage</th><th>Exit criteria (move on when…)</th><th>Typical win probability</th></tr></thead><tbody>
+    <tr><td>1. New lead</td><td>Contact details captured and source tagged</td><td>5%</td></tr>
+    <tr><td>2. Contacted / qualified</td><td>Need, budget, decision-maker and timeline confirmed</td><td>15%</td></tr>
+    <tr><td>3. Meeting / demo / site visit</td><td>Solution shown; requirements documented</td><td>30%</td></tr>
+    <tr><td>4. Proposal sent</td><td>Written quote with scope and price</td><td>50%</td></tr>
+    <tr><td>5. Negotiation</td><td>Terms agreed in principle</td><td>75%</td></tr>
+    <tr><td>6. Won / lost</td><td>Contract or advance received / reason for loss recorded</td><td>100% / 0%</td></tr>
+  </tbody></table>
+  <ul class="check">
+    <li>Respond to every new lead within 5 minutes during business hours (automate the first reply)</li>
+    <li>Follow up at least 5 times before marking a lead lost</li>
+    <li>Record a reason for every lost deal, and review the patterns monthly</li>
+  </ul>
+
+  <h2>4.4 Marketing plan on a page</h2>
+  <div class="grid2">
+    <div><h3>Owned channels</h3><ul class="check">
+      <li>Website with clear offer, proof and call to action</li>
+      <li>Google Business Profile, with reviews requested after every sale</li>
+      <li>WhatsApp Business catalogue and broadcast list</li>
+      <li>Email newsletter (monthly)</li>
+      <li>Two or three social posts a week on one or two platforms</li></ul></div>
+    <div><h3>Growth channels</h3><ul class="check">
+      <li>Referral programme with a reward for both sides</li>
+      <li>Partnerships with complementary businesses</li>
+      <li>Paid ads (Meta / Google) with a fixed test budget and a CAC target</li>
+      <li>SEO content answering customers' top 20 questions</li>
+      <li>Events, workshops and local community</li></ul></div>
+  </div>
+
+  <h2>4.5 The operating rhythm</h2>
+  <table><thead><tr><th>Meeting</th><th>When</th><th>Length</th><th>Agenda</th></tr></thead><tbody>
+    <tr><td>Daily huddle</td><td>Every morning</td><td>10–15 min</td><td>Yesterday's wins, today's priority, anything blocking you</td></tr>
+    <tr><td>Weekly leadership</td><td>Same day every week</td><td>60–90 min</td><td>KPI scorecard, quarterly priorities on/off track, customer and people issues, solve the top 3 issues</td></tr>
+    <tr><td>Monthly business review</td><td>First week of the month</td><td>2 hrs</td><td>P&amp;L vs budget, cash, pipeline, hiring, project status</td></tr>
+    <tr><td>Quarterly planning</td><td>Last week of the quarter</td><td>Half a day</td><td>Review the quarter, set next quarter's 3–5 priorities, update the one-page plan</td></tr>
+    <tr><td>Annual strategy</td><td>Before the financial year starts</td><td>1–2 days</td><td>Vision, 12-month goals, budget, org chart, pricing</td></tr>
+  </tbody></table>
+</section>
+
+<!-- ============================ LAYER 5a: INVESTORS ============================ -->
+<section class="page L5">
+  <div class="opener"><div class="kicker">Chapter 05 · Anandamaya · Scale I</div><h1>How to get investors in your company</h1>
+  <p>Outside capital works like fuel: useful only when the engine (Layers 1–4) is sound. This chapter explains your funding options, how to prepare, and how a round actually runs.</p></div>
+
+  <h2>5.1 Should you raise at all?</h2>
+  <div class="grid2">
+    <div class="box"><h3>Raise equity when…</h3><ul>
+      <li>The market is large and timing matters (winner-takes-most)</li>
+      <li>You've shown customers want it (paying users, repeat orders, growth)</li>
+      <li>Each rupee invested can return several rupees of enterprise value</li>
+      <li>You're ready to give up a share of ownership and report to a board</li></ul></div>
+    <div class="box"><h3>Consider alternatives when…</h3><ul>
+      <li>The business is profitable and can grow from its own cash</li>
+      <li>You need working capital, not growth capital (use debt)</li>
+      <li>The market is steady and local (franchising or loans may fit better)</li>
+      <li>You want full control and dividends rather than an exit</li></ul></div>
+  </div>
+
+  <h2>5.2 Funding options compared</h2>
+  <table><thead><tr><th>Source</th><th>Typical stage</th><th>Typical size (India)</th><th>What they want</th></tr></thead><tbody>
+    <tr><td><b>Bootstrapping / revenue</b></td><td>Any</td><td>Your cash flow</td><td>Nothing. You keep 100%</td></tr>
+    <tr><td><b>Friends and family</b></td><td>Idea / prototype</td><td>₹5–50 lakh</td><td>Trust in you. Still document it properly</td></tr>
+    <tr><td><b>Government grants and schemes</b></td><td>Proof of concept to early market</td><td>Startup India Seed Fund Scheme: up to ₹20 lakh grant (proof of concept) and up to ₹50 lakh as debt or convertibles (market entry), via approved incubators. State startup policies add more</td><td>Innovation, DPIIT recognition, milestones</td></tr>
+    <tr><td><b>Angel investors and networks</b></td><td>Pre-seed / seed</td><td>₹25 lakh–₹3 crore</td><td>A strong founder, early traction, a big market</td></tr>
+    <tr><td><b>Incubators and accelerators</b></td><td>Pre-seed</td><td>Small cheque plus mentoring for 3–10% equity</td><td>Coachable team, fast execution</td></tr>
+    <tr><td><b>Seed / early-stage VC</b></td><td>Seed to Series A</td><td>₹2–25 crore</td><td>Product-market fit, a path to 5–10× growth</td></tr>
+    <tr><td><b>Growth VC / private equity</b></td><td>Series B and beyond</td><td>₹50 crore+</td><td>Proven unit economics, scale, a route to IPO or acquisition</td></tr>
+    <tr><td><b>Bank and MSME loans</b></td><td>Revenue-generating</td><td>Varies. CGTMSE guarantees collateral-free loans to micro and small enterprises</td><td>Cash flow to repay, Udyam registration, good credit history</td></tr>
+    <tr><td><b>Venture debt / revenue-based financing</b></td><td>Post-revenue, often alongside VC</td><td>A share of recent revenue or of the last equity round</td><td>Predictable recurring revenue</td></tr>
+    <tr><td><b>Crowdfunding / community rounds</b></td><td>Consumer brands</td><td>Varies</td><td>A strong community and story (securities crowdfunding is restricted in India, so check with counsel)</td></tr>
+    <tr><td><b>Strategic investors / corporates</b></td><td>Any</td><td>Varies</td><td>Synergy with their business, a distribution deal</td></tr>
+  </tbody></table>
+
+  <h2>5.3 Investor-readiness checklist</h2>
+  <div class="cols2">
+  <ul class="check">
+    <li>Incorporated as a Private Limited Company</li>
+    <li>DPIIT Startup India recognition (eligible companies and LLPs up to 10 years old, below the turnover cap; check the 2026 notification for current limits)</li>
+    <li>Founders' agreement with vesting (typically 4 years, 1-year cliff)</li>
+    <li>All IP (code, brand, designs) assigned to the company, not the founders</li>
+    <li>Trademark filed</li>
+    <li>Clean, up-to-date books and audited financials for past years</li>
+    <li>All ROC, GST, TDS and PF filings current, with no outstanding notices</li>
+    <li>Cap table in a spreadsheet that ties back to MCA records</li>
+    <li>Employee contracts, appointment letters and an ESOP pool plan</li>
+    <li>Key customer contracts in writing</li>
+    <li>Financial model: 3 years monthly, with assumptions</li>
+    <li>Pitch deck (12 slides) plus a one-page teaser</li>
+    <li>KPI dashboard with 12+ months of history</li>
+    <li>Use of funds and an 18–24-month milestone plan</li>
+    <li>Data room organised (see 5.6)</li>
+    <li>A list of 50–100 target investors who fit your stage and sector</li>
+  </ul>
+  </div>
+  <div class="box tip"><b>On angel tax:</b> the old Section 56(2)(viib) "angel tax" on share premiums was abolished by the Finance (No. 2) Act, 2024. You still need a proper valuation report and FEMA compliance for foreign investors, and DPIIT recognition still unlocks benefits such as the Section 80-IAC tax holiday (on application), IPR fee rebates, self-certification under some labour laws and Seed Fund access.</div>
+
+  <h2>5.4 The 12-step fundraising process</h2>
+  <ol class="steps">
+    <li><b>Decide the amount and the milestones.</b> Raise enough for 18–24 months of runway to reach the milestones that justify the next round.</li>
+    <li><b>Choose the instrument:</b> equity shares, CCPS (compulsorily convertible preference shares, the Indian VC standard), CCDs, convertible notes (allowed for DPIIT startups), or iSAFE notes for quick early rounds.</li>
+    <li><b>Build the financial model and valuation logic.</b> Early valuations are negotiated. Dilution of 10–25% per round is typical.</li>
+    <li><b>Prepare the deck, teaser and data room</b> before contacting anyone.</li>
+    <li><b>Build the investor list</b> by stage, sector, cheque size and portfolio conflicts. Rank them A/B/C.</li>
+    <li><b>Get warm introductions</b> through portfolio founders, mentors, CAs and lawyers. Cold emails work best with a crisp teaser and strong traction.</li>
+    <li><b>Run a tight process.</b> Pitch your B-list first for practice, then pack the A-list meetings into 4–6 weeks so you create momentum.</li>
+    <li><b>Follow up with monthly investor updates.</b> They show progress and build trust even with investors who say "not now".</li>
+    <li><b>Negotiate the term sheet.</b> Focus on valuation, liquidation preference, board, anti-dilution, ESOP pool and vesting (see 5.7).</li>
+    <li><b>Due diligence:</b> financial, legal, tax and technical. A clean data room cuts this from months to weeks.</li>
+    <li><b>Definitive agreements:</b> Share Subscription Agreement (SSA) and Shareholders' Agreement (SHA). Amend the Articles of Association.</li>
+    <li><b>Close and comply:</b> receive funds, allot shares (PAS-3 to the ROC), FEMA filings (FC-GPR) for foreign money, update the cap table and statutory registers. Then deliver on the use-of-funds plan.</li>
+  </ol>
+
+  <h2>5.5 The 12-slide pitch deck</h2>
+  <table><thead><tr><th style="width:5%">#</th><th style="width:22%">Slide</th><th>What to show</th></tr></thead><tbody>
+    <tr><td>1</td><td>Title</td><td>Company name, one-line description, logo, contact</td></tr>
+    <tr><td>2</td><td>Problem</td><td>The painful, expensive problem, with a real customer story or data</td></tr>
+    <tr><td>3</td><td>Solution</td><td>Your product and why it's 10× better</td></tr>
+    <tr><td>4</td><td>Why now</td><td>The trend, regulation or technology shift that makes this the moment</td></tr>
+    <tr><td>5</td><td>Market size</td><td>TAM / SAM / SOM, built bottom-up (customers × price)</td></tr>
+    <tr><td>6</td><td>Product</td><td>Screenshots or a demo, the key features, the roadmap</td></tr>
+    <tr><td>7</td><td>Traction</td><td>Revenue, growth rate, customers, retention, logos, testimonials</td></tr>
+    <tr><td>8</td><td>Business model</td><td>How you make money, pricing, unit economics (CAC, LTV, margin)</td></tr>
+    <tr><td>9</td><td>Go-to-market</td><td>Channels, sales motion, partnerships</td></tr>
+    <tr><td>10</td><td>Competition</td><td>Landscape and your unfair advantage (not "we have no competitors")</td></tr>
+    <tr><td>11</td><td>Team</td><td>Why this team wins: relevant experience, advisors, key hires planned</td></tr>
+    <tr><td>12</td><td>The ask</td><td>Amount, instrument, use of funds, milestones it will reach</td></tr>
+  </tbody></table>
+
+  <h2>5.6 Data room checklist</h2>
+  <div class="cols2">
+  <ul class="check">
+    <li><b>Corporate:</b> Certificate of Incorporation, MoA and AoA, board and shareholder minutes, statutory registers</li>
+    <li><b>Cap table:</b> share certificates, past SHAs and SSAs, ESOP plan and grants</li>
+    <li><b>Financials:</b> audited statements (3 years or since start), monthly MIS, the financial model, bank statements</li>
+    <li><b>Tax:</b> GST returns, ITRs, TDS filings, any notices and their resolution</li>
+    <li><b>Legal:</b> customer, vendor and lease contracts; litigation (if any)</li>
+    <li><b>IP:</b> trademark and patent filings, IP assignment agreements</li>
+    <li><b>People:</b> org chart, employment contracts, policies, PF/ESI compliance</li>
+    <li><b>Product and tech:</b> architecture overview, security practices, roadmap</li>
+    <li><b>Commercial:</b> top-customer list, pipeline, unit economics, KPI history</li>
+    <li><b>Licences:</b> all registrations from Chapter 01</li>
+  </ul>
+  </div>
+
+  <h2>5.7 Term-sheet glossary</h2>
+  <table><thead><tr><th style="width:25%">Term</th><th>Plain-English meaning</th><th style="width:28%">Founder-friendly position</th></tr></thead><tbody>
+    <tr><td>Pre-money / post-money valuation</td><td>Company value before / after the new money comes in</td><td>Be clear which one is being quoted</td></tr>
+    <tr><td>Liquidation preference</td><td>Who gets paid first on a sale or shutdown, and how much</td><td>1× non-participating</td></tr>
+    <tr><td>Anti-dilution</td><td>Protects the investor if a future round is priced lower</td><td>Broad-based weighted average (avoid full ratchet)</td></tr>
+    <tr><td>ESOP pool</td><td>Shares reserved for employees</td><td>Size it to the real hiring plan. Watch out for a pool carved out of pre-money</td></tr>
+    <tr><td>Board composition</td><td>Who sits on the board</td><td>Founders keep a majority at the early stage</td></tr>
+    <tr><td>Founder vesting</td><td>Founders earn their shares over time</td><td>Credit for time already served</td></tr>
+    <tr><td>Pro-rata rights</td><td>Investor's right to invest in future rounds to keep their %</td><td>Standard</td></tr>
+    <tr><td>ROFR / tag-along / drag-along</td><td>Rules on share transfers and selling the company</td><td>Drag-along only with a majority threshold</td></tr>
+    <tr><td>Reserved matters / veto rights</td><td>Decisions that need investor consent</td><td>Limit to major matters, not day-to-day operations</td></tr>
+    <tr><td>Exclusivity / no-shop</td><td>You can't talk to other investors for a period</td><td>30–45 days maximum</td></tr>
+  </tbody></table>
+
+  <h2>5.8 Simple cap table example</h2>
+  <table><thead><tr><th>Shareholder</th><th>Before round (shares)</th><th>%</th><th>New shares</th><th>After round (shares)</th><th>%</th></tr></thead><tbody>
+    <tr><td>Founder A</td><td>6,00,000</td><td>60.0%</td><td>–</td><td>6,00,000</td><td>48.0%</td></tr>
+    <tr><td>Founder B</td><td>3,00,000</td><td>30.0%</td><td>–</td><td>3,00,000</td><td>24.0%</td></tr>
+    <tr><td>ESOP pool</td><td>1,00,000</td><td>10.0%</td><td>50,000</td><td>1,50,000</td><td>12.0%</td></tr>
+    <tr><td>Seed investor</td><td>–</td><td>–</td><td>2,00,000</td><td>2,00,000</td><td>16.0%</td></tr>
+    <tr><td><b>Total</b></td><td><b>10,00,000</b></td><td><b>100%</b></td><td><b>2,50,000</b></td><td><b>12,50,000</b></td><td><b>100%</b></td></tr>
+  </tbody></table>
+  <p class="muted">Example: the investor puts in ₹2 crore for 2,00,000 new shares at ₹100 each, and the ESOP pool is topped up by 50,000 shares in the same round. That makes the post-money valuation ₹12.5 crore (12,50,000 shares × ₹100) and the pre-money ₹10.5 crore. Because the pool top-up counts in the price, it dilutes the founders rather than the investor: a common negotiation point. The workbook version calculates this automatically.</p>
+
+  <div class="box warn"><h3>Seven fundraising mistakes to avoid</h3><ol>
+    <li>Raising with messy books and late filings</li>
+    <li>Giving away too much equity too early (keep founders above 50–60% after seed)</li>
+    <li>Taking money from someone who doesn't fit (wrong stage, sector or values)</li>
+    <li>Fundraising for too long. Set a deadline and keep running the business</li>
+    <li>Signing a term sheet without a startup lawyer</li>
+    <li>Mixing investment money with operating money without a budget</li>
+    <li>Going silent with investors after the money lands</li></ol></div>
+</section>
+
+<!-- ============================ LAYER 5b: FRANCHISE ============================ -->
+<section class="page L5">
+  <div class="opener"><div class="kicker">Chapter 06 · Anandamaya · Scale II</div><h1>Steps to start your own franchise</h1>
+  <p>Franchising lets you grow with other people's capital and local energy, but only if your business is a system someone else can copy and run profitably. Read this chapter as the franchisor: the brand owner.</p></div>
+
+  <h2>6.1 Franchise readiness test</h2>
+  <p>Answer yes or no. You need at least 8 yes answers before you franchise.</p>
+  <ul class="check cols2">
+    <li>At least one unit (ideally 2–3) has been profitable for 2+ years</li>
+    <li>Results are repeatable in a different location or city</li>
+    <li>The business runs to documented SOPs without the founder</li>
+    <li>Unit economics leave enough margin for the franchisee AND your royalty</li>
+    <li>The brand has recognition and customer loyalty</li>
+    <li>Trademarks are registered in the relevant classes</li>
+    <li>The model can be taught in 2–6 weeks of training</li>
+    <li>The supply chain can serve outlets in new geographies</li>
+    <li>You have the capital and team to support franchisees (launch, audits, marketing)</li>
+    <li>Market demand exists in your target cities</li>
+  </ul>
+
+  <h2>6.2 Choose a franchise model</h2>
+  <table><thead><tr><th>Model</th><th>Who owns and invests</th><th>Who operates</th><th>Best when</th></tr></thead><tbody>
+    <tr><td><b>FOFO</b> (franchise-owned, franchise-operated)</td><td>Franchisee</td><td>Franchisee</td><td>Fastest, lowest-capital expansion. The most common model</td></tr>
+    <tr><td><b>FOCO</b> (franchise-owned, company-operated)</td><td>Franchisee invests</td><td>Brand runs it and shares revenue</td><td>Quality-sensitive formats; passive investors</td></tr>
+    <tr><td><b>COCO</b> (company-owned, company-operated)</td><td>Brand</td><td>Brand</td><td>Flagship and pilot stores. Not a franchise, but proves the model</td></tr>
+    <tr><td><b>COFO</b> (company-owned, franchise-operated)</td><td>Brand owns the asset</td><td>Operator manages for a fee or share</td><td>Prime locations the brand wants to keep</td></tr>
+    <tr><td><b>Master / area franchise</b></td><td>Master franchisee for a region</td><td>Opens or sub-franchises units</td><td>Entering a new state or country quickly</td></tr>
+    <tr><td><b>Licensing / dealership</b></td><td>Licensee</td><td>Licensee, with lighter controls</td><td>Product brands; light-touch expansion</td></tr>
+  </tbody></table>
+
+  <h2>6.3 The 12 steps to franchise your business</h2>
+  <ol class="steps">
+    <li><b>Prove the prototype.</b> Make one or more units consistently profitable, then document their exact P&amp;L.</li>
+    <li><b>Protect the brand.</b> Register trademarks (name, logo, tagline) in every relevant class before you sign anyone. Record recipes, designs and software as trade secrets or copyright.</li>
+    <li><b>Design unit economics for the franchisee.</b> Total investment, payback period (aim for 18–36 months), breakeven month, and expected ROI after royalty.</li>
+    <li><b>Set your fee structure</b> (see 6.4) and choose the model (FOFO, FOCO and so on).</li>
+    <li><b>Write the operations manual</b> (see 6.6). This is the heart of the franchise.</li>
+    <li><b>Draft the legal documents</b> with a franchise lawyer: Franchise Agreement, Franchise Disclosure Document, NDA, Letter of Intent, and a trademark licence (if separate).</li>
+    <li><b>Build the support system:</b> training academy, launch kit, supply chain, POS/ERP, marketing playbook, field audit team.</li>
+    <li><b>Define the ideal franchisee</b> and a scoring process (see 6.8). Choose operators, not just investors.</li>
+    <li><b>Create sales material:</b> franchise brochure, website page, investment table, testimonials, unit P&amp;L.</li>
+    <li><b>Recruit:</b> franchise expos, franchise portals, LinkedIn, existing customers (often the best franchisees), brokers.</li>
+    <li><b>Launch the first 3–5 franchisees near home</b> so you can support them closely. Fix the system before you expand further.</li>
+    <li><b>Scale with governance:</b> monthly reviews, mystery audits, a franchise advisory council, a shared marketing fund, and technology that gives you live visibility of every outlet.</li>
+  </ol>
+
+  <h2>6.4 Franchise fee structure</h2>
+  <table><thead><tr><th>Fee</th><th>What it covers</th><th>Typical range (India)</th></tr></thead><tbody>
+    <tr><td>One-time franchise fee</td><td>Brand rights, territory, training, launch support</td><td>₹2 lakh–₹25 lakh, depending on brand strength</td></tr>
+    <tr><td>Royalty</td><td>Ongoing brand use and support</td><td>4–10% of gross sales, or a fixed monthly fee</td></tr>
+    <tr><td>Marketing / ad fund</td><td>National and regional brand marketing</td><td>1–4% of gross sales</td></tr>
+    <tr><td>Technology fee</td><td>POS, ERP, app, website listing</td><td>Fixed monthly per outlet</td></tr>
+    <tr><td>Supply margin</td><td>Margin on proprietary products and raw materials</td><td>Varies (disclose it openly)</td></tr>
+    <tr><td>Renewal and transfer fees</td><td>Agreement renewal; selling the franchise to someone else</td><td>A fraction of the initial fee</td></tr>
+  </tbody></table>
+  <p class="muted">Ranges are indicative only. Franchise fees and royalties attract GST in India, so build that into the franchisee's investment table.</p>
+
+  <h2>6.5 Template: franchisee unit economics</h2>
+  <table><thead><tr><th style="width:55%">Line item</th><th>Amount (₹)</th></tr></thead><tbody>
+    <tr><td>Franchise fee</td><td></td></tr>
+    <tr><td>Fit-out, interiors and signage</td><td></td></tr>
+    <tr><td>Equipment and technology</td><td></td></tr>
+    <tr><td>Opening inventory</td><td></td></tr>
+    <tr><td>Security deposit (rent)</td><td></td></tr>
+    <tr><td>Working capital (3 months)</td><td></td></tr>
+    <tr><td><b>Total investment (A)</b></td><td></td></tr>
+    <tr><td>Monthly revenue</td><td></td></tr>
+    <tr><td>− Cost of goods</td><td></td></tr>
+    <tr><td>− Rent, salaries, utilities</td><td></td></tr>
+    <tr><td>− Royalty and marketing fund</td><td></td></tr>
+    <tr><td><b>Monthly operating profit (B)</b></td><td></td></tr>
+    <tr><td><b>Payback in months = A ÷ B</b></td><td></td></tr>
+  </tbody></table>
+
+  <h2>6.6 Operations manual: table of contents</h2>
+  <div class="cols2">
+  <ol>
+    <li>Welcome, brand story, mission and values</li>
+    <li>Brand standards: logo use, store design, uniforms, tone of voice</li>
+    <li>Site selection criteria and fit-out specifications</li>
+    <li>Pre-opening checklist and launch plan</li>
+    <li>Products and services: recipes and specs, quality standards</li>
+    <li>Daily opening and closing procedures</li>
+    <li>Customer service standards and complaint handling</li>
+    <li>Staffing: hiring, onboarding, training and attendance (Chapter 02)</li>
+    <li>Inventory, approved suppliers and ordering</li>
+    <li>POS, technology and reporting</li>
+    <li>Cash handling, banking, accounting and royalty reporting</li>
+    <li>Local marketing playbook and approved materials</li>
+    <li>Health, safety, hygiene and statutory compliance</li>
+    <li>Audits, KPIs and scorecards</li>
+    <li>Crisis management and escalation contacts</li>
+    <li>Forms and templates</li>
+  </ol>
+  </div>
+
+  <h2>6.7 Franchise agreement and disclosure checklist</h2>
+  <p>India has no single franchise statute. Franchising is governed by contract law, trademark law, competition law, GST and FEMA (for cross-border deals). That makes your agreement and a voluntary disclosure document doubly important. In the <b>United States</b>, by contrast, the FTC Franchise Rule requires franchisors to give a Franchise Disclosure Document (FDD) with 23 specified items at least 14 calendar days before signing or payment, and several states also require registration. If you franchise abroad, use a local franchise lawyer.</p>
+  <div class="grid2">
+    <div><h3>Franchise agreement clauses</h3><ul class="check">
+      <li>Grant of rights and trademark licence</li>
+      <li>Territory and exclusivity</li>
+      <li>Term, renewal and conditions</li>
+      <li>All fees, royalty basis, payment dates, GST</li>
+      <li>Site approval and fit-out standards</li>
+      <li>Training and ongoing support obligations</li>
+      <li>Approved suppliers and pricing</li>
+      <li>Reporting, audit and inspection rights</li>
+      <li>Marketing fund rules</li>
+      <li>Confidentiality and IP protection</li>
+      <li>Non-compete (during the term) and non-solicit</li>
+      <li>Transfer, sale and succession</li>
+      <li>Default, cure period and termination</li>
+      <li>Post-termination obligations (de-branding)</li>
+      <li>Dispute resolution: arbitration seat and governing law</li></ul></div>
+    <div><h3>Disclosure document contents</h3><ul class="check">
+      <li>Franchisor background, directors and experience</li>
+      <li>Litigation and bankruptcy history</li>
+      <li>Initial and ongoing fees in full</li>
+      <li>Estimated total initial investment</li>
+      <li>Supplier restrictions and franchisor margins</li>
+      <li>Territory rules</li>
+      <li>Training and support provided</li>
+      <li>Financial performance data (if shared), with assumptions</li>
+      <li>Number of outlets opened, closed and transferred</li>
+      <li>Contacts of current and former franchisees</li>
+      <li>Franchisor's financial statements</li>
+      <li>A copy of the franchise agreement</li></ul></div>
+  </div>
+
+  <h2>6.8 Franchisee selection scorecard</h2>
+  <table><thead><tr><th>Criterion</th><th>Weight</th><th>Score (1–5)</th><th>Weighted</th></tr></thead><tbody>
+    <tr><td>Financial capacity (investment plus 6 months' buffer)</td><td>25%</td><td></td><td></td></tr>
+    <tr><td>Operating involvement: full-time, hands-on</td><td>20%</td><td></td><td></td></tr>
+    <tr><td>Relevant business or people-management experience</td><td>15%</td><td></td><td></td></tr>
+    <tr><td>Values fit and willingness to follow the system</td><td>15%</td><td></td><td></td></tr>
+    <tr><td>Local network and market knowledge</td><td>10%</td><td></td><td></td></tr>
+    <tr><td>Location quality (if proposed)</td><td>10%</td><td></td><td></td></tr>
+    <tr><td>References and background check</td><td>5%</td><td></td><td></td></tr>
+    <tr><td><b>Total</b> (approve ≥ 3.8)</td><td>100%</td><td></td><td></td></tr>
+  </tbody></table>
+</section>
+
+<!-- ============================ ROADMAP ============================ -->
+<section class="page">
+  <div class="opener"><div class="kicker">Chapter 07</div><h1>Your 90-day implementation roadmap</h1>
+  <p>Don't try to fix everything at once. Work from the bottom layer up, one sprint at a time.</p></div>
+
+  <table><thead><tr><th style="width:16%">Weeks</th><th style="width:22%">Focus</th><th>Actions</th></tr></thead><tbody>
+    <tr><td><b>1–2</b></td><td>Diagnose</td><td>Take the scorecard with your team. Pick the weakest layer. List every registration and filing and fix anything overdue. Separate bank accounts.</td></tr>
+    <tr><td><b>3–4</b></td><td>Foundation</td><td>Set up cloud accounting with the chart of accounts. Load the compliance calendar. Build the 13-week cash forecast. File your trademark.</td></tr>
+    <tr><td><b>5–6</b></td><td>People</td><td>Update appointment letters for the Labour Codes. Publish the attendance and leave policy. Go digital with attendance and payroll. Use the onboarding checklist for the next hire.</td></tr>
+    <tr><td><b>7–8</b></td><td>Systems</td><td>Write the top 10 SOPs. Build the product and services catalogue with margins. Add one recurring-revenue offer. Map your digital stack and close the gaps.</td></tr>
+    <tr><td><b>9–10</b></td><td>Growth</td><td>Write the one-page plan. Launch the weekly KPI dashboard and leadership meeting. Set up CRM pipeline stages and a referral programme.</td></tr>
+    <tr><td><b>11–12</b></td><td>Scale</td><td>Retake the scorecard. If Layers 1–4 score 8+, start the investor-readiness or franchise-readiness checklist. Build the data room or operations manual.</td></tr>
+    <tr><td><b>13</b></td><td>Review</td><td>Quarterly planning session. Celebrate progress and set the next 90 days.</td></tr>
+  </tbody></table>
+
+  <h2>Template index</h2>
+  <p>Every template in this book is in the <code>templates/</code> folder, ready to copy into your own systems:</p>
+  <table><thead><tr><th>File</th><th>What's inside</th></tr></thead><tbody>
+    <tr><td><code>Business-Toolkit.xlsx</code></td><td>One workbook with a sheet per template: scorecard, chart of accounts, compliance calendar, 13-week cash flow, attendance register (with auto-totals), leave tracker, onboarding tracker, product catalogue (with margin formulas), KPI dashboard, sales pipeline, cap table (with formulas), franchise unit economics, franchisee scorecard</td></tr>
+    <tr><td><code>csv/</code></td><td>The same sheets as CSV files for Google Sheets, Notion or Airtable import</td></tr>
+    <tr><td><code>onboarding-checklist.md</code></td><td>Editable onboarding checklist, pre-boarding to Day 90</td></tr>
+    <tr><td><code>attendance-leave-policy.md</code></td><td>Fill-in-the-blanks attendance and leave policy</td></tr>
+    <tr><td><code>appointment-letter-template.md</code></td><td>Appointment letter outline aligned to the Labour Codes checklist</td></tr>
+    <tr><td><code>sop-template.md</code></td><td>Standard operating procedure template</td></tr>
+    <tr><td><code>pitch-deck-outline.md</code></td><td>12-slide deck outline with prompts</td></tr>
+    <tr><td><code>franchise-ops-manual-outline.md</code></td><td>Operations manual skeleton</td></tr>
+  </tbody></table>
+
+  <h2>Sources and further reading</h2>
+  <ul class="src">
+    <li>Startup India / DPIIT recognition and the Seed Fund Scheme: startupindia.gov.in, seedfund.startupindia.gov.in</li>
+    <li>Income Tax Department, taxation of start-ups: incometaxindia.gov.in/income-from-business/profession-taxation-of-start-ups</li>
+    <li>New Labour Codes effective 21 Nov 2025: KPMG Flash News, "GOI notifies implementation of Labour Codes"; RSM India Newsflash; greytHR "Labour Codes 2025 are live"</li>
+    <li>GST portal and CBIC (thresholds, returns, invoice rules): gst.gov.in, cbic-gst.gov.in</li>
+    <li>Ministry of Corporate Affairs (incorporation, annual filings): mca.gov.in</li>
+    <li>IP India (trademarks): ipindia.gov.in</li>
+    <li>EPFO and ESIC: epfindia.gov.in, esic.gov.in</li>
+    <li>CGTMSE (collateral-free MSE credit): cgtmse.in · Udyam: udyamregistration.gov.in</li>
+    <li>Franchising in India guides: LegalWiz, Razorpay Rize, IncorpX ("How to register a franchise business in India")</li>
+    <li>US FTC Franchise Rule (16 CFR Part 436): ftc.gov/business-guidance/franchises</li>
+  </ul>
+</section>
+
+<!-- ============================ ABOUT ============================ -->
+<section class="page">
+  <div style="background:var(--ink);color:#fff;border-radius:8pt;padding:22pt 24pt;margin-top:10mm">
+    <div style="font:600 9pt Inter;letter-spacing:.2em;text-transform:uppercase;color:#f3c89a">About</div>
+    <h1 style="color:#fff;margin-top:6pt">Khosha Systems</h1>
+    <p style="font-size:11.5pt;color:#d6dbea">Software development and AI transformation, based in Bangalore. We replace duct-tape operations with unified system architecture, built on our belief that technology should compound in value over time.</p>
+  </div>
+  <div class="grid2" style="margin-top:14pt">
+    <div class="box"><h3>Services</h3><ul>
+      <li>Web applications and SaaS platforms</li>
+      <li>Websites and landing pages</li>
+      <li>AI transformation: agents, workflow automation, LLM integration</li>
+      <li>Mobile applications (React Native, PWA)</li>
+      <li>System architecture and technical audits</li>
+      <li>Digital transformation: legacy modernisation, cloud migration, process automation</li></ul></div>
+    <div class="box"><h3>Products</h3><ul>
+      <li><b>RetailerOS</b>: retail operating system for mobile and electronics retailers</li>
+      <li><b>Real Estate CRM</b>: leads, site visits, channel partners, document vault</li>
+      <li><b>Visitor Management System</b>: digital check-in, WhatsApp alerts, RERA-compliant logs</li>
+      <li><b>Custom workforce products</b>: attendance, onboarding and operations tools built around your business</li></ul></div>
+  </div>
+  <div class="box tip"><h3>Turn this framework into software</h3>
+  <p>Every checklist in this book can become a live system: attendance that flows into payroll, onboarding that runs itself, a KPI dashboard that updates daily, a franchise portal that shows every outlet in real time. If you'd like help building yours, talk to us.</p>
+  <p><b>khoshasystems.com</b> · ankit@khoshasystems.com · +91 888 497 2272<br>Kumara Park, Seshadripuram, Bangalore</p></div>
+  <p class="muted" style="margin-top:16pt">© 2026 Khosha Systems. You may print, copy and adapt the templates for use in your own business. This publication is general information and not legal, tax, accounting or investment advice. Always consult a qualified professional for your situation.</p>
+</section>
+
+</body>
+</html>
