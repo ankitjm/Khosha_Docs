@@ -1,0 +1,772 @@
+<title>Duct-Tape Audit</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="A free 4-minute audit by Khosha Systems: see what manual work is costing your business, your five-layer system score, and a 90-day plan with AI prompts you can use today.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout concept: a drafting sheet on blueprint grid paper. One column; the duct-tape strip is the single bold gesture. */
+:root {
+  --paper: #f2f4f8;
+  --sheet: #ffffff;
+  --ink: #121b33;
+  --ink-2: #4a5470;
+  --ink-3: #6f7891;
+  --rule: #d6dce7;
+  --grid: rgba(43, 95, 168, .075);
+  --accent: #c8651a;
+  --accent-ink: #9c4d10;
+  --accent-soft: #fbeee2;
+  --tape: #c3c8d1;
+  --tape-hi: #d9dde4;
+  --tape-lo: #aab0bb;
+  --good: #2f7d4f;
+  --warn: #a8701a;
+  --bad: #b23b2e;
+  --l1: #8a5a2b; --l2: #2f7d4f; --l3: #2b5fa8; --l4: #6a46a8; --l5: #a87a09;
+  --track: #e4e8ef;
+  --chip: #f6f7fa;
+  --display: "Archivo", "Arial Narrow", Arial, sans-serif;
+  --body: "IBM Plex Sans", "Segoe UI", Roboto, Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0d1424; --sheet: #141d31; --ink: #e8ecf5; --ink-2: #aab3c8; --ink-3: #8790a8;
+    --rule: #2a3550; --grid: rgba(140, 170, 225, .06);
+    --accent: #e8893a; --accent-ink: #f2a463; --accent-soft: #2c2018;
+    --tape: #5d6475; --tape-hi: #6d7487; --tape-lo: #4b5162;
+    --good: #5cb685; --warn: #d9a548; --bad: #e0705f;
+    --l1: #c48a55; --l2: #5cb685; --l3: #6d9ce0; --l4: #a585e0; --l5: #d6ad3c;
+    --track: #232d45; --chip: #1a2439;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0d1424; --sheet: #141d31; --ink: #e8ecf5; --ink-2: #aab3c8; --ink-3: #8790a8;
+  --rule: #2a3550; --grid: rgba(140, 170, 225, .06);
+  --accent: #e8893a; --accent-ink: #f2a463; --accent-soft: #2c2018;
+  --tape: #5d6475; --tape-hi: #6d7487; --tape-lo: #4b5162;
+  --good: #5cb685; --warn: #d9a548; --bad: #e0705f;
+  --l1: #c48a55; --l2: #5cb685; --l3: #6d9ce0; --l4: #a585e0; --l5: #d6ad3c;
+  --track: #232d45; --chip: #1a2439;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+  color: var(--ink);
+  font: 16px/1.55 var(--body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 48px;
+}
+.wrap { max-width: 880px; margin: 0 auto; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; letter-spacing: -.01em; }
+h1 { font-size: clamp(2.2rem, 6.5vw, 4rem); line-height: 1.02; font-weight: 800; font-stretch: 112%; }
+h2 { font-size: clamp(1.45rem, 3.6vw, 2rem); line-height: 1.12; font-weight: 750; font-stretch: 108%; }
+h3 { font-size: 1.12rem; font-weight: 700; font-stretch: 100%; }
+p { margin: 0; }
+a { color: var(--accent-ink); }
+.label { font: 500 .72rem/1.3 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); }
+.muted { color: var(--ink-2); }
+.small { font-size: .88rem; }
+.num { font-variant-numeric: tabular-nums; }
+
+/* Top bar */
+.top { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-block: 20px 8px; flex-wrap: wrap; }
+.brand { font: 600 .8rem var(--mono); letter-spacing: .18em; text-transform: uppercase; }
+.brand b { color: var(--accent-ink); font-weight: 600; }
+
+/* Hero */
+.hero { padding-block: 40px 28px; display: grid; gap: 22px; }
+.taped { position: relative; display: inline-block; z-index: 0; white-space: nowrap; }
+.taped::before {
+  content: ""; position: absolute; z-index: -1; left: -.12em; right: -.18em; top: .12em; bottom: .02em;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 3px, var(--tape-hi) 3px 4px),
+    linear-gradient(180deg, var(--tape-hi), var(--tape) 45%, var(--tape-lo));
+  opacity: .9; transform: rotate(-2.2deg);
+  clip-path: polygon(0 8%, 3% 0, 6% 10%, 9% 2%, 91% 0, 94% 9%, 97% 1%, 100% 8%, 100% 92%, 97% 100%, 94% 90%, 91% 99%, 9% 100%, 6% 91%, 3% 99%, 0 90%);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .taped::before { animation: stick .7s cubic-bezier(.2,.9,.3,1.2) both .15s; transform-origin: left center; }
+  @keyframes stick { from { transform: rotate(-2.2deg) scaleX(.0); } to { transform: rotate(-2.2deg) scaleX(1); } }
+}
+.lede { font-size: 1.15rem; max-width: 62ch; color: var(--ink-2); }
+.hero-row { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+.get { display: flex; flex-wrap: wrap; gap: 8px 18px; padding: 0; margin: 0; list-style: none; }
+.get li { font: 500 .82rem var(--mono); color: var(--ink-2); }
+.get li::before { content: "→ "; color: var(--accent-ink); }
+
+/* Buttons */
+.btn {
+  appearance: none; border: 0; cursor: pointer; font: 600 1rem var(--body);
+  padding: 13px 22px; border-radius: 4px; background: var(--ink); color: var(--paper);
+  display: inline-flex; gap: 8px; align-items: center; text-decoration: none;
+}
+.btn:hover { background: var(--accent-ink); }
+.btn.ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--rule); }
+.btn.ghost:hover { box-shadow: inset 0 0 0 1.5px var(--ink-2); background: transparent; }
+.btn.small { padding: 8px 14px; font-size: .88rem; }
+.btn.accent { background: var(--accent); color: #fff; }
+.btn.accent:hover { background: var(--accent-ink); }
+:focus-visible { outline: 2.5px solid var(--accent); outline-offset: 2px; }
+
+/* Example card */
+.example { background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; padding: 18px 20px; display: grid; gap: 12px; }
+.example .stats { display: flex; flex-wrap: wrap; gap: 10px 32px; }
+.stat b { display: block; font: 800 1.7rem/1.1 var(--display); font-stretch: 105%; }
+.stat span { font: .78rem var(--mono); color: var(--ink-3); }
+
+/* Wizard */
+.sheet { background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; padding: clamp(18px, 4vw, 34px); display: grid; gap: 26px; }
+.progress { display: flex; gap: 6px; }
+.progress i { flex: 1; height: 4px; background: var(--track); border-radius: 2px; }
+.progress i.on { background: var(--accent); }
+.step-head { display: grid; gap: 6px; }
+.q { display: grid; gap: 10px; padding-top: 22px; border-top: 1px dashed var(--rule); }
+.q:first-of-type { border-top: 0; padding-top: 0; }
+.q-title { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.q-title .layer { font: 600 .68rem var(--mono); letter-spacing: .1em; text-transform: uppercase; padding: 2px 7px; border-radius: 3px; color: var(--sheet); }
+.sub { font-size: .8rem; font-family: var(--mono); color: var(--ink-3); }
+.opts { display: flex; flex-wrap: wrap; gap: 8px; }
+.opts.levels { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 640px) { .opts.levels { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.opt { position: relative; }
+.opt input { position: absolute; opacity: 0; pointer-events: none; }
+.opt label {
+  display: block; cursor: pointer; padding: 9px 13px; border-radius: 4px; background: var(--chip);
+  border: 1.5px solid var(--rule); font-size: .92rem; line-height: 1.3;
+}
+.opts.levels .opt label { height: 100%; }
+[hidden] { display: none !important; }
+.opt label small { display: block; color: var(--ink-3); font-size: .76rem; margin-top: 2px; }
+.opt input:checked + label { border-color: var(--ink); background: var(--sheet); box-shadow: inset 0 0 0 1px var(--ink); }
+.opt input:focus-visible + label { outline: 2.5px solid var(--accent); outline-offset: 2px; }
+.opt label:hover { border-color: var(--ink-2); }
+.field input[type=text], .field input[type=number] {
+  width: 100%; max-width: 420px; font: 1rem var(--body); padding: 10px 12px; border-radius: 4px;
+  border: 1.5px solid var(--rule); background: var(--chip); color: var(--ink);
+}
+.nav { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center; }
+.err { color: var(--bad); font-size: .9rem; min-height: 1.4em; }
+.meter {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; margin-inline: -1px;
+  background: var(--ink); color: var(--paper); border-radius: 0 0 6px 6px;
+  padding: 10px 16px; display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: baseline;
+}
+.meter b { font: 700 1.15rem var(--display); font-stretch: 105%; }
+.meter span { font: .78rem var(--mono); opacity: .8; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); }
+
+/* Report */
+.report { display: grid; gap: 22px; }
+.report > section { background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; padding: clamp(18px, 4vw, 32px); display: grid; gap: 16px; }
+.r-hero { position: relative; overflow: hidden; }
+.big { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 700px) { .big { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.big div { border-top: 3px solid var(--ink); padding-top: 8px; min-width: 0; }
+.big div:first-child { border-color: var(--accent); }
+.big b { display: block; font: 800 clamp(1.5rem, 4vw, 2.2rem)/1.05 var(--display); font-stretch: 100%; font-variant-numeric: tabular-nums; }
+.big span { font: .78rem/1.35 var(--mono); color: var(--ink-3); display: block; margin-top: 4px; }
+
+.layers { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 24px; align-items: center; }
+@media (max-width: 640px) { .layers { grid-template-columns: 1fr; justify-items: center; } }
+.layers svg { width: 100%; max-width: 240px; height: auto; }
+.layer-list { display: grid; gap: 10px; width: 100%; }
+.lrow { display: grid; grid-template-columns: 12px minmax(0, 1fr) auto; gap: 10px; align-items: start; }
+.lrow .dot { width: 12px; height: 12px; border-radius: 50%; margin-top: 5px; }
+.lrow p { font-size: .9rem; color: var(--ink-2); }
+.pill { font: 600 .74rem var(--mono); padding: 3px 8px; border-radius: 20px; white-space: nowrap; border: 1.5px solid currentColor; }
+.pill.good { color: var(--good); } .pill.warn { color: var(--warn); } .pill.bad { color: var(--bad); }
+
+.bp { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; }
+@media (max-width: 720px) { .bp { grid-template-columns: 1fr; } }
+.bp-panel { border: 1.5px dashed var(--rule); border-radius: 6px; padding: 14px; display: grid; gap: 12px; align-content: start; min-width: 0; }
+.islands { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.island { position: relative; background: var(--chip); border: 1px solid var(--rule); border-radius: 3px; padding: 10px; font-size: .84rem; line-height: 1.3; }
+.island:nth-child(odd) { transform: rotate(-.8deg); } .island:nth-child(even) { transform: rotate(.7deg); }
+.island small { display: block; font: .7rem var(--mono); color: var(--ink-3); margin-top: 3px; }
+.island.t::after {
+  content: ""; position: absolute; width: 44px; height: 14px; top: -7px; left: 50%; margin-left: -22px;
+  background: linear-gradient(180deg, var(--tape-hi), var(--tape) 50%, var(--tape-lo)); opacity: .92; transform: rotate(-4deg);
+  clip-path: polygon(0 10%, 6% 0, 12% 12%, 88% 0, 94% 12%, 100% 4%, 100% 90%, 94% 100%, 88% 88%, 12% 100%, 6% 88%, 0 96%);
+}
+.island.l0 { border-left: 3px solid var(--bad); } .island.l1 { border-left: 3px solid var(--warn); }
+.island.l2 { border-left: 3px solid var(--ink-3); } .island.l3 { border-left: 3px solid var(--good); }
+.hub svg { width: 100%; height: auto; display: block; }
+
+.move { border: 1px solid var(--rule); border-radius: 6px; padding: 18px; display: grid; gap: 12px; background: var(--sheet); }
+.move-head { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline; }
+.move-head .save { font: 600 .82rem var(--mono); color: var(--good); }
+.fromto { font: .8rem var(--mono); color: var(--ink-2); }
+.fromto b { color: var(--ink); font-weight: 600; }
+.cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+@media (max-width: 720px) { .cols { grid-template-columns: 1fr; } }
+.cols ol, .cols ul { margin: 6px 0 0; padding-left: 20px; font-size: .92rem; }
+.cols li { margin-bottom: 4px; }
+.prompt { background: var(--chip); border: 1px solid var(--rule); border-radius: 4px; padding: 12px; display: grid; gap: 8px; min-width: 0; }
+.prompt pre { margin: 0; white-space: pre-wrap; word-break: break-word; font: .8rem/1.5 var(--mono); color: var(--ink); max-height: 220px; overflow: auto; }
+.prompt-bar { display: flex; justify-content: space-between; gap: 8px; align-items: center; flex-wrap: wrap; }
+.khosha { font-size: .86rem; color: var(--ink-2); border-top: 1px dashed var(--rule); padding-top: 10px; }
+.khosha b { color: var(--ink); }
+details.more { border: 1px solid var(--rule); border-radius: 6px; background: var(--sheet); }
+details.more > summary { cursor: pointer; padding: 14px 18px; font-weight: 600; }
+details.more > div { padding: 0 18px 18px; display: grid; gap: 14px; }
+
+.plan { display: grid; gap: 0; }
+.plan-row { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 14px; padding: 12px 0; border-top: 1px solid var(--rule); }
+.plan-row:first-child { border-top: 0; }
+.plan-row .wk { font: 600 .8rem var(--mono); color: var(--accent-ink); padding-top: 2px; }
+.plan-row ul { margin: 0; padding-left: 18px; font-size: .93rem; }
+@media (max-width: 520px) { .plan-row { grid-template-columns: 1fr; gap: 4px; } }
+
+.goals { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 640px) { .goals { grid-template-columns: 1fr; } }
+.goal { border: 1px solid var(--rule); border-radius: 6px; padding: 14px; display: grid; gap: 8px; align-content: start; }
+.goal ul { margin: 0; padding-left: 18px; font-size: .9rem; }
+
+.cta { background: var(--ink) !important; color: var(--paper); border-color: var(--ink) !important; }
+.cta h2, .cta .label { color: var(--paper); }
+.cta .label { opacity: .7; }
+.cta p { color: var(--paper); opacity: .88; max-width: 62ch; }
+.contact { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.contact code { font: 600 .95rem var(--mono); background: rgba(127,127,127,.18); padding: 7px 10px; border-radius: 4px; user-select: all; }
+.cta .btn.ghost { color: var(--paper); box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.4); }
+.bonus { border: 1.5px dashed rgba(255,255,255,.35); border-radius: 6px; padding: 12px 14px; font-size: .92rem; }
+.toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--paper); padding: 9px 16px; border-radius: 4px; font: .88rem var(--body); z-index: 20; }
+details.how summary { cursor: pointer; font-size: .9rem; color: var(--ink-2); }
+details.how div { font-size: .88rem; color: var(--ink-2); display: grid; gap: 6px; margin-top: 8px; }
+footer { padding-top: 26px; font-size: .8rem; color: var(--ink-3); display: grid; gap: 4px; }
+</style>
+
+<div class="wrap">
+  <div class="top">
+    <div class="brand"><b>Khosha</b> Systems</div>
+    <div class="label">Free · 4 minutes · No sign-up</div>
+  </div>
+
+  <!-- INTRO -->
+  <section id="intro" class="hero">
+    <h1>What is <span class="taped">duct&nbsp;tape</span> costing your business?</h1>
+    <p class="lede">Every business runs on some duct tape: the Excel sheet only one person understands, the WhatsApp group that doubles as an order book, the register filled in at month-end. Answer 12 quick questions and get your own blueprint for replacing it.</p>
+    <ul class="get">
+      <li>Hours and rupees lost each year</li>
+      <li>Your five-layer system score</li>
+      <li>AI prompts written for your business</li>
+      <li>A 90-day plan</li>
+    </ul>
+    <div class="hero-row">
+      <button class="btn accent" id="start" type="button">Start my audit</button>
+      <span class="small muted">Your answers stay in your browser.</span>
+    </div>
+    <div class="example" aria-label="Example result">
+      <div class="label">Example result · a 14-person mobile &amp; electronics store</div>
+      <div class="stats" id="exampleStats"></div>
+      <p class="small muted">Billing in a separate app, stock in Excel, leads and support on WhatsApp, attendance in a register. Your numbers will be your own.</p>
+    </div>
+  </section>
+
+  <!-- WIZARD -->
+  <section id="wizard" hidden>
+    <div class="meter" aria-live="polite"><span>Duct-tape tax so far</span><b class="num" id="meterVal">₹0 / year</b></div>
+    <div class="sheet" style="margin-top:14px">
+      <div class="progress" id="progress"><i></i><i></i><i></i><i></i></div>
+      <div id="stepBody"></div>
+      <div class="err" id="err" role="alert"></div>
+      <div class="nav">
+        <button class="btn ghost" id="back" type="button">Back</button>
+        <button class="btn" id="next" type="button">Next</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- REPORT -->
+  <section id="report" class="report" hidden></section>
+
+  <footer>
+    <div>© 2026 Khosha Systems · Bengaluru · khoshasystems.com</div>
+    <div>Estimates come from your own answers and the assumptions listed in the report. This is general guidance, not legal, tax or financial advice.</div>
+  </footer>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(() => {
+  const AREAS = [
+    { id: "books", layer: 1, name: "Invoicing & bookkeeping", desc: "Raising invoices, recording expenses, matching the bank." },
+    { id: "compliance", layer: 1, name: "GST, TDS & statutory filings", desc: "Returns, payments, PF/ESI, deadlines." },
+    { id: "payroll", layer: 2, name: "Attendance, leave & payroll", desc: "Who came in, who's on leave, what everyone gets paid." },
+    { id: "hiring", layer: 2, name: "Hiring & onboarding", desc: "Finding people and getting them productive." },
+    { id: "ops", layer: 3, name: "Inventory, orders & delivery", desc: "Stock, orders, jobs, projects: the work itself." },
+    { id: "support", layer: 3, name: "Customer messages & support", desc: "Answering calls, WhatsApp, complaints, repeat questions." },
+    { id: "crm", layer: 4, name: "Leads & follow-ups", desc: "Enquiries, follow-ups, quotes, closing." },
+    { id: "reports", layer: 4, name: "Reports & numbers", desc: "Knowing sales, margin and cash without asking anyone." },
+  ];
+  const LAYERS = [
+    { n: 1, key: "Foundation", sk: "Annamaya", c: "--l1" },
+    { n: 2, key: "People", sk: "Pranamaya", c: "--l2" },
+    { n: 3, key: "Systems", sk: "Manomaya", c: "--l3" },
+    { n: 4, key: "Growth", sk: "Vijnanamaya", c: "--l4" },
+    { n: 5, key: "Scale", sk: "Anandamaya", c: "--l5" },
+  ];
+  const LEVELS = [
+    { v: 0, t: "Paper or memory", s: "Registers, notebooks, in someone's head" },
+    { v: 1, t: "Excel & WhatsApp", s: "Sheets, chats, phone calls" },
+    { v: 2, t: "Separate apps", s: "Software that doesn't talk to the rest" },
+    { v: 3, t: "Connected & automated", s: "Flows into one system on its own" },
+  ];
+  const TOOL = ["Paper", "Excel + WhatsApp", "Separate app", "Connected"];
+  const HOURS = [{ v: 1, t: "0–2 hrs" }, { v: 3.5, t: "2–5 hrs" }, { v: 7.5, t: "5–10 hrs" }, { v: 15, t: "10–20 hrs" }, { v: 25, t: "20+ hrs" }];
+  // Share of the time we assume connected systems and automation can take back, by current level.
+  const RECOVER = [0.6, 0.5, 0.3, 0.08];
+  const INDUSTRIES = ["Retail & electronics", "Real estate", "Food & hospitality", "Professional services", "Healthcare & clinics", "Education & training", "Manufacturing & distribution", "Agency or tech", "Other"];
+  const TEAMS = ["1–5", "6–15", "16–50", "51–200", "200+"];
+  const SALARIES = [15000, 25000, 40000, 60000];
+  const GOALS = [
+    { id: "grow", t: "Grow revenue faster" },
+    { id: "franchise", t: "Open new locations or franchise" },
+    { id: "invest", t: "Raise investment" },
+    { id: "freedom", t: "Step back from day-to-day work" },
+    { id: "ai", t: "Use AI across the business" },
+    { id: "comply", t: "Get compliance under control" },
+  ];
+
+  const blank = () => ({ name: "", industry: null, team: null, salary: 25000, areas: {}, away: null, docs: null, goals: [] });
+  let A = blank();
+  try { const s = JSON.parse(localStorage.getItem("dta-answers") || "null"); if (s && s.areas) A = Object.assign(blank(), s); } catch (e) {}
+  const save = () => { try { localStorage.setItem("dta-answers", JSON.stringify(A)); } catch (e) {} };
+
+  const $ = (s, r = document) => r.querySelector(s);
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const inr = (x) => {
+    x = Math.round(x);
+    if (x >= 1e7) return "₹" + (x / 1e7).toFixed(1).replace(/\.0$/, "") + " crore";
+    if (x >= 1e5) return "₹" + (x / 1e5).toFixed(1).replace(/\.0$/, "") + " lakh";
+    return "₹" + x.toLocaleString("en-IN");
+  };
+
+  function calc(a) {
+    const hourly = (a.salary || 25000) / 200; // ~25 working days × 8 hours
+    let wk = 0, spent = 0;
+    const per = AREAS.map((ar) => {
+      const r = a.areas[ar.id] || {};
+      const ok = r.level != null && r.hours != null;
+      const rec = ok ? r.hours * RECOVER[r.level] : 0;
+      if (ok) { wk += rec; spent += r.hours; }
+      return { ...ar, level: r.level, hours: r.hours, rec, ok };
+    });
+    const layerScore = LAYERS.map((L) => {
+      if (L.n === 5) {
+        if (a.away == null || a.docs == null) return null;
+        return Math.round(((a.away + a.docs) / 6) * 100);
+      }
+      const xs = per.filter((p) => p.layer === L.n && p.level != null);
+      if (!xs.length) return null;
+      return Math.round((xs.reduce((s, p) => s + p.level, 0) / (xs.length * 3)) * 100);
+    });
+    const known = layerScore.filter((x) => x != null);
+    const overall = known.length ? Math.round(known.reduce((s, x) => s + x, 0) / known.length) : 0;
+    return { hourly, wk, spent, yearly: wk * 52 * hourly, per, layerScore, overall, fte: wk / 45 };
+  }
+
+  // Example
+  (() => {
+    const ex = { salary: 22000, away: 1.5, docs: 1, areas: {
+      books: { level: 2, hours: 7.5 }, compliance: { level: 1, hours: 3.5 }, payroll: { level: 0, hours: 7.5 }, hiring: { level: 1, hours: 3.5 },
+      ops: { level: 1, hours: 15 }, support: { level: 1, hours: 15 }, crm: { level: 1, hours: 7.5 }, reports: { level: 1, hours: 7.5 } } };
+    const r = calc(ex);
+    $("#exampleStats").innerHTML =
+      `<div class="stat"><b class="num">${inr(r.yearly)}</b><span>duct-tape tax / year</span></div>` +
+      `<div class="stat"><b class="num">${Math.round(r.wk)} hrs</b><span>recoverable each week</span></div>` +
+      `<div class="stat"><b class="num">${r.overall}/100</b><span>system score</span></div>`;
+  })();
+
+  // ---------- Wizard ----------
+  let step = 0;
+  const radio = (name, id, val, checked, html) =>
+    `<div class="opt"><input type="radio" name="${name}" id="${id}" value="${esc(val)}" ${checked ? "checked" : ""}><label for="${id}">${html}</label></div>`;
+  const check = (name, id, val, checked, html) =>
+    `<div class="opt"><input type="checkbox" name="${name}" id="${id}" value="${esc(val)}" ${checked ? "checked" : ""}><label for="${id}">${html}</label></div>`;
+
+  function areaQ(ar) {
+    const r = A.areas[ar.id] || {};
+    const L = LAYERS[ar.layer - 1];
+    const name = ar.id === "ops" && isService() ? "Projects, jobs & delivery" : ar.name;
+    return `<div class="q" data-area="${ar.id}">
+      <div class="q-title"><span class="layer" style="background:var(${L.c})">${L.key}</span><h3>${esc(name)}</h3></div>
+      <p class="small muted">${esc(ar.desc)}</p>
+      <div class="sub">How does it run today?</div>
+      <div class="opts levels">${LEVELS.map((l) => radio(`lv-${ar.id}`, `lv-${ar.id}-${l.v}`, l.v, r.level === l.v, `${l.t}<small>${l.s}</small>`)).join("")}</div>
+      <div class="sub">Hours your team spends on it each week</div>
+      <div class="opts">${HOURS.map((h, i) => radio(`hr-${ar.id}`, `hr-${ar.id}-${i}`, h.v, r.hours === h.v, h.t)).join("")}</div>
+    </div>`;
+  }
+  const isService = () => ["Professional services", "Agency or tech", "Education & training", "Healthcare & clinics"].includes(A.industry);
+
+  const STEPS = [
+    () => `<div class="step-head"><div class="label">Step 1 of 4</div><h2>Your business</h2></div>
+      <div class="q field"><h3>Business name <span class="muted small">(optional)</span></h3>
+        <input type="text" id="bizname" value="${esc(A.name)}" placeholder="e.g. Sharma Mobiles" autocomplete="organization"></div>
+      <div class="q"><h3>Industry</h3><div class="opts">${INDUSTRIES.map((x, i) => radio("industry", `ind-${i}`, x, A.industry === x, x)).join("")}</div></div>
+      <div class="q"><h3>Team size</h3><div class="opts">${TEAMS.map((x, i) => radio("team", `team-${i}`, x, A.team === x, x + " people")).join("")}</div></div>
+      <div class="q"><h3>Typical monthly salary of the people doing admin and operations work</h3>
+        <p class="small muted">We use this to turn hours into rupees.</p>
+        <div class="opts">${SALARIES.map((x, i) => radio("salary", `sal-${i}`, x, A.salary === x, inr(x))).join("")}</div></div>`,
+    () => `<div class="step-head"><div class="label">Step 2 of 4</div><h2>Money and people</h2><p class="muted">Pick the closest answer. Rough is fine.</p></div>` + AREAS.slice(0, 4).map(areaQ).join(""),
+    () => `<div class="step-head"><div class="label">Step 3 of 4</div><h2>Operations and customers</h2></div>` + AREAS.slice(4).map(areaQ).join(""),
+    () => `<div class="step-head"><div class="label">Step 4 of 4</div><h2>Freedom and goals</h2></div>
+      <div class="q"><h3>If you took two weeks off, the business would…</h3><div class="opts">
+        ${[[0, "Stop"], [1.5, "Slow down a lot"], [3, "Run fine"]].map(([v, t], i) => radio("away", `away-${i}`, v, A.away === v, t)).join("")}</div></div>
+      <div class="q"><h3>How much of the way you work is written down?</h3><div class="opts">
+        ${[[0, "Almost nothing"], [1, "A few things"], [2, "Key processes"], [3, "Nearly everything"]].map(([v, t], i) => radio("docs", `docs-${i}`, v, A.docs === v, t)).join("")}</div></div>
+      <div class="q"><h3>What do you want in the next 12 months?</h3><p class="small muted">Pick any.</p><div class="opts">
+        ${GOALS.map((g) => check("goals", `goal-${g.id}`, g.id, A.goals.includes(g.id), g.t)).join("")}</div></div>`,
+  ];
+
+  function readStep() {
+    const body = $("#stepBody");
+    if (step === 0) {
+      A.name = ($("#bizname").value || "").trim().slice(0, 60);
+      const i = body.querySelector("input[name=industry]:checked"); A.industry = i ? i.value : null;
+      const t = body.querySelector("input[name=team]:checked"); A.team = t ? t.value : null;
+      const s = body.querySelector("input[name=salary]:checked"); if (s) A.salary = +s.value;
+    } else if (step === 1 || step === 2) {
+      body.querySelectorAll("[data-area]").forEach((q) => {
+        const id = q.dataset.area;
+        const lv = q.querySelector(`input[name=lv-${id}]:checked`);
+        const hr = q.querySelector(`input[name=hr-${id}]:checked`);
+        A.areas[id] = { level: lv ? +lv.value : null, hours: hr ? +hr.value : null };
+      });
+    } else {
+      const aw = body.querySelector("input[name=away]:checked"); A.away = aw ? +aw.value : null;
+      const d = body.querySelector("input[name=docs]:checked"); A.docs = d ? +d.value : null;
+      A.goals = [...body.querySelectorAll("input[name=goals]:checked")].map((x) => x.value);
+    }
+    save(); updateMeter();
+  }
+  function missing() {
+    if (step === 0) return [!A.industry && "industry", !A.team && "team size"].filter(Boolean);
+    if (step === 1 || step === 2) {
+      return AREAS.slice(step === 1 ? 0 : 4, step === 1 ? 4 : 8)
+        .filter((ar) => { const r = A.areas[ar.id] || {}; return r.level == null || r.hours == null; })
+        .map((ar) => ar.name.toLowerCase());
+    }
+    return [A.away == null && "two weeks off", A.docs == null && "written down"].filter(Boolean);
+  }
+  function updateMeter() {
+    const r = calc(A);
+    $("#meterVal").textContent = `${inr(r.yearly)} / year`;
+  }
+  function renderStep() {
+    $("#stepBody").innerHTML = STEPS[step]();
+    [...$("#progress").children].forEach((el, i) => el.classList.toggle("on", i <= step));
+    $("#back").style.visibility = step === 0 ? "hidden" : "visible";
+    $("#next").textContent = step === 3 ? "See my blueprint" : "Next";
+    $("#err").textContent = "";
+    updateMeter();
+  }
+  $("#stepBody").addEventListener("change", () => { readStep(); $("#err").textContent = ""; });
+  $("#stepBody").addEventListener("input", (e) => { if (e.target.id === "bizname") readStep(); });
+
+  $("#start").addEventListener("click", () => {
+    $("#intro").hidden = true; $("#wizard").hidden = false; step = 0; renderStep();
+    window.scrollTo({ top: 0 });
+  });
+  $("#back").addEventListener("click", () => { readStep(); if (step > 0) { step--; renderStep(); window.scrollTo({ top: 0 }); } });
+  $("#next").addEventListener("click", () => {
+    readStep();
+    const m = missing();
+    if (m.length) { $("#err").textContent = "Pick an answer for: " + m.join(", ") + "."; return; }
+    if (step < 3) { step++; renderStep(); window.scrollTo({ top: 0 }); }
+    else { showReport(); }
+  });
+
+  // ---------- Content library ----------
+  const IND = () => (A.industry && A.industry !== "Other" ? A.industry.toLowerCase() : "small") ;
+  const TEAM = () => A.team || "a small team";
+  const PLAY = {
+    books: {
+      week: ["Open a separate current account for the business if you haven't.", "Photograph every bill the day you get it and drop it in one shared folder.", "Pick one cloud accounting tool (Zoho Books, Tally Prime, QuickBooks) and raise every invoice from it."],
+      target: "Invoices, payments and bank entries reconcile themselves. GST data is ready the day the month ends.",
+      khosha: "We connect billing, payment links and bank feeds so books update themselves.",
+      prompt: () => `Act as an experienced bookkeeper for a ${IND()} business in India with ${TEAM()} people.\n\nI will paste last month's bank statement as CSV below.\n1. Put every transaction into one of these categories: Sales, Purchases, Salaries, Rent, Utilities, Software, Marketing, Travel, GST/TDS payments, Loan EMI, Owner drawings, Other.\n2. Flag anything that looks like a duplicate, a personal expense or a payment with no matching invoice.\n3. Give me a one-page summary: money in, money out, top 5 expenses and anything unusual compared with a normal month.\nAsk me about any transaction you can't classify instead of guessing.\n\n[paste bank statement CSV here]`,
+    },
+    compliance: {
+      week: ["List every filing you make and who does it.", "Put every due date in a shared Google Calendar with a 5-day reminder.", "Ask your CA for a single monthly checklist and a list of any open notices."],
+      target: "Every deadline sits on one calendar, with data pulled straight from your books. No late fees and no 11 pm scrambles.",
+      khosha: "We build compliance calendars and automated reminders into the systems your team already uses.",
+      prompt: () => `Create a 12-month compliance calendar for a GST-registered ${IND()} business in India with ${TEAM()} employees, based in [your state].\n\nInclude every recurring filing and payment that could apply: GST returns (GSTR-1, GSTR-3B, annual return), TDS deposits and quarterly returns, PF and ESI, Professional Tax, advance tax, income-tax return, and ROC filings for a [private limited company / LLP / proprietorship].\n\nFor each one, give: the due date, what's needed to file it, who usually prepares it, and the penalty for missing it. Output a table I can paste into Google Sheets. Mark anything I should double-check with my CA, because rules and dates change.`,
+    },
+    payroll: {
+      week: ["Write down your attendance and leave rules on one page (or use the prompt).", "Move attendance from the register to a phone app or a shared sheet with codes (P, A, HD, CL, SL).", "Lock attendance on the 25th so payroll uses one set of numbers."],
+      target: "Staff mark attendance on their phone, leave is approved in a tap, and payroll calculates itself from the same data.",
+      khosha: "We build attendance-to-payroll systems with geo-tagged check-in, leave approvals and payslips.",
+      prompt: () => `I run a ${IND()} business in India with ${TEAM()} people.\n\n1. Draft a clear, fair attendance and leave policy: working hours, grace time, late marks, leave types and days per year, carry-forward, how to apply and who approves. Keep it consistent with India's new Labour Codes and flag anything I should confirm locally.\n2. Design a Google Sheets attendance register for one month: the columns, a list of attendance codes, and the exact formulas to count present days, leave, half days and payable days for each employee.\n3. Give me a 6-step monthly payroll checklist that uses this register.`,
+    },
+    hiring: {
+      week: ["Write the outcomes the next hire must own in 12 months before writing the job ad.", "Create one onboarding checklist and use it for every new joiner.", "Assign every new hire a buddy who isn't their manager."],
+      target: "Every role has an outcome-based job description, a scorecard interview and an onboarding plan that runs on autopilot.",
+      khosha: "We build onboarding portals that handle documents, checklists, training and 30/60/90 check-ins.",
+      prompt: () => `I'm hiring a [role] for my ${IND()} business in India (team of ${TEAM()}).\n\nWrite:\n1. A job description built around the outcomes this person must deliver in their first 12 months, with must-have and nice-to-have skills.\n2. Five structured interview questions, with what a strong answer and a weak answer sound like.\n3. A short practical task (under 2 hours) that mirrors the real job.\n4. An onboarding plan: pre-boarding checklist, Day 1 agenda, Week 1 plan and 30/60/90-day goals.`,
+    },
+    ops: {
+      week: () => isService()
+        ? ["List every active job or project in one shared board with owner, due date and status.", "Hold a 10-minute daily huddle at the board.", "Send every client a weekly status update from a template."]
+        : ["Do a full stock count of your top 50 items.", "Set a reorder level for each of them.", "Record every sale and purchase in one system the same day, not at month-end."],
+      target: () => isService()
+        ? "Every job moves through clear stages. Clients see progress without calling, and you can see who is overloaded."
+        : "Stock updates the moment something is sold. Reorders are suggested before you run out, and dead stock gets flagged.",
+      khosha: () => A.industry === "Retail & electronics"
+        ? "RetailerOS, our retail operating system, handles IMEI and serial tracking, schemes, GST billing and stock analytics in one place."
+        : "We build custom order, inventory and project systems that match how your business actually works.",
+      prompt: () => isService()
+        ? `I run a ${IND()} business with ${TEAM()} people. I'll paste our list of active projects or jobs below (client, scope, start date, due date, owner, status).\n\n1. Tell me which jobs are at risk of running late and why.\n2. Show who is overloaded and suggest how to rebalance the work.\n3. Suggest 5–6 clear stages every job should move through, with the rule for moving to the next stage.\n4. Write a short weekly status-update template I can send clients.\n\n[paste your project list here]`
+        : `I run a ${IND()} business in India. I'll paste my stock report as CSV below (item, quantity on hand, units sold in the last 30 days, unit cost, supplier lead time in days).\n\n1. Calculate days of stock left for each item.\n2. List what I should reorder this week, with suggested quantities.\n3. Flag dead stock (no sales in 60 days) and the cash tied up in it.\n4. Suggest 3 ways to free up that cash.\n\n[paste stock CSV here]`,
+    },
+    support: {
+      week: ["Move customer chats to WhatsApp Business with a catalogue and quick replies.", "List your 20 most common questions this week.", "Set an away message that gives your hours and the answer to the top question."],
+      target: "Common questions are answered instantly, day or night. Your team handles only what needs a human, and every conversation is logged against the customer.",
+      khosha: "We build AI agents on WhatsApp and your website that answer, book and update your CRM.",
+      prompt: () => `I run a ${IND()} business in India. Below are the questions customers ask us most (or a week of WhatsApp chats with names and numbers removed).\n\n1. Group them into themes.\n2. Write a short, friendly answer for each that I can save as a WhatsApp Business quick reply, in English, with a [Hindi / Kannada / Tamil / other] version.\n3. Tell me which 3 questions an auto-reply or website FAQ could handle completely, and draft that FAQ.\n\n[paste questions or chats here]`,
+    },
+    crm: {
+      week: ["Put every enquiry from every source into one list with date, source and next step.", "Reply to new leads within 5 minutes during working hours.", "Follow up at least 5 times before calling a lead lost, and write down why it was lost."],
+      target: "Every lead from every channel lands in one place, gets an instant reply and an automatic follow-up sequence, and the owner can see the pipeline any time.",
+      khosha: () => A.industry === "Real estate"
+        ? "Our Real Estate CRM captures 99acres, MagicBricks and Housing.com leads, tracks site visits and runs a channel-partner portal."
+        : "We build CRMs with lead capture from every channel, WhatsApp follow-ups and pipeline dashboards.",
+      prompt: () => `Write a 5-step follow-up sequence for people who enquired with my ${IND()} business in India but didn't buy. Send on day 0, 1, 3, 7 and 14.\n\n- Mix WhatsApp and email. Keep each message under 80 words.\n- Each message should give something useful (a tip, a proof point, an answer to a common worry), not just "checking in".\n- The last message should politely close the loop.\n\nThen give me 6 sales pipeline stages with a clear rule for moving a lead from one stage to the next, and the 3 numbers I should track weekly.`,
+    },
+    reports: {
+      week: ["Choose 6 numbers you want to see every Monday (sales, margin, cash, leads, conversion, receivables).", "Have one person send them on one sheet by 10 am every Monday.", "Spend 20 minutes on them with your team. Agree one action per number."],
+      target: "A live dashboard updates itself from billing, CRM and payroll. You see the business on your phone without asking anyone.",
+      khosha: "We build live owner dashboards that pull from all your systems, with AI summaries sent to WhatsApp.",
+      prompt: () => `Act as the CFO of a ${IND()} business in India with ${TEAM()} people. I'll paste the last 8 weeks of our numbers below: sales, number of customers, number of new leads, expenses and cash in the bank.\n\n1. Show the trend for each number in plain language.\n2. Calculate gross margin (if possible), cash runway and lead-to-customer conversion.\n3. Point out the 3 things I should worry about and the 1 thing going well.\n4. Suggest the 6 numbers I should review every Monday, and a simple one-page dashboard layout for them.\n\n[paste your numbers here]`,
+    },
+  };
+  const val = (x) => (typeof x === "function" ? x() : x);
+
+  const LAYER_TEXT = {
+    1: ["Money and compliance run on effort and memory. This is the riskiest gap: everything above depends on it.", "The basics work, but they rely on people remembering. One busy month away from a late fee.", "Books and filings are solid. Keep connecting them to the rest of the business."],
+    2: ["People processes live on paper and goodwill. Every new hire and every payroll costs more time than it should.", "Attendance, payroll and onboarding work, but they're manual and depend on one person.", "Your people systems are in good shape and ready to scale."],
+    3: ["The day-to-day work isn't captured in any system, so it can't be measured, delegated or improved.", "Operations run on spreadsheets and chats. It works until volume doubles.", "Operations are systemised. Automation is the next step."],
+    4: ["Leads and numbers are mostly in people's heads. Growth decisions are guesswork.", "You track some things, but leads leak and reports take effort to assemble.", "You can see your pipeline and numbers. Now make them real-time."],
+    5: ["The business depends on you. Investors, franchisees and buyers will see that first.", "Some of the business can run without you, but not enough to scale or step back.", "The business can run and grow without you. You're ready to scale."],
+  };
+  const band = (s) => (s < 40 ? 0 : s < 70 ? 1 : 2);
+  const pillCls = ["bad", "warn", "good"];
+  const pillTxt = ["Fix first", "Fragile", "Strong"];
+
+  function rings(scores) {
+    const cx = 120, cy = 120;
+    let out = `<svg viewBox="0 0 240 240" role="img" aria-label="Five-layer system score">`;
+    LAYERS.forEach((L, i) => {
+      const r = 26 + i * 21;
+      const c = 2 * Math.PI * r;
+      const s = scores[i] ?? 0;
+      out += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--track)" stroke-width="12"/>`;
+      out += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(${L.c})" stroke-width="12" stroke-linecap="round" stroke-dasharray="${(c * s) / 100} ${c}" transform="rotate(-90 ${cx} ${cy})"/>`;
+    });
+    const o = calc(A).overall;
+    out += `<text x="${cx}" y="${cy + 2}" text-anchor="middle" dominant-baseline="middle" fill="var(--ink)" style="font:800 22px var(--display)">${o}</text>`;
+    out += `</svg>`;
+    return out;
+  }
+
+  function hub(per) {
+    const short = { books: "Books", compliance: "Filings", payroll: "Payroll", hiring: "Onboarding", ops: isService() ? "Projects" : "Inventory", support: "Support", crm: "CRM", reports: "Dashboard" };
+    const cx = 200, cy = 150, R = 108;
+    let s = `<svg viewBox="0 0 400 300" role="img" aria-label="Unified system: every function connected to one source of truth">`;
+    s += `<circle cx="${cx}" cy="${cy}" r="140" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 5"/>`;
+    s += `<text x="${cx}" y="18" text-anchor="middle" fill="var(--accent-ink)" style="font:600 10px var(--mono);letter-spacing:.12em">AI AGENTS · AUTOMATIONS</text>`;
+    per.forEach((p, i) => {
+      const a = (i / per.length) * Math.PI * 2 - Math.PI / 2;
+      const x = cx + Math.cos(a) * R, y = cy + Math.sin(a) * R * 0.88;
+      s += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="var(--ink-3)" stroke-width="1.5"/>`;
+      s += `<rect x="${x - 40}" y="${y - 13}" width="80" height="26" rx="3" fill="var(--sheet)" stroke="var(${LAYERS[p.layer - 1].c})" stroke-width="1.8"/>`;
+      s += `<text x="${x}" y="${y + 1}" text-anchor="middle" dominant-baseline="middle" fill="var(--ink)" style="font:600 11px var(--body)">${short[p.id]}</text>`;
+    });
+    s += `<circle cx="${cx}" cy="${cy}" r="38" fill="var(--ink)"/>`;
+    s += `<text x="${cx}" y="${cy - 6}" text-anchor="middle" fill="var(--paper)" style="font:700 10.5px var(--body)">One source</text>`;
+    s += `<text x="${cx}" y="${cy + 8}" text-anchor="middle" fill="var(--paper)" style="font:700 10.5px var(--body)">of truth</text>`;
+    s += `</svg>`;
+    return s;
+  }
+
+  function promptBlock(id, idx) {
+    return `<div class="prompt"><div class="prompt-bar"><span class="label">AI prompt · paste into ChatGPT, Claude or Gemini</span>
+      <button class="btn ghost small" type="button" data-copy="p-${idx}">Copy prompt</button></div>
+      <pre id="p-${idx}">${esc(PLAY[id].prompt())}</pre></div>`;
+  }
+
+  function goalCards(r) {
+    const L = r.layerScore;
+    const cards = {
+      franchise: ["Franchise readiness", `Franchisees buy a system, not a brand. Layer 3 (Systems) is at ${L[2]} and Layer 5 (Scale) at ${L[4]}. Aim for 70+ on both before you sign anyone.`,
+        ["Document your top 10 processes as SOPs. They become the operations manual.", "Trademark your brand name and logo now.", "Prove one unit makes money without you for 6 months, and write down its P&L."]],
+      invest: ["Investor readiness", `Due diligence starts with Layer 1. Yours is at ${L[0]}. Investors pay for clean books, a clean cap table and numbers you can produce in minutes.`,
+        ["Get 12 months of books reconciled and your filings current.", "Build a weekly KPI sheet and keep it going. History builds trust.", "Check whether you qualify for DPIIT Startup India recognition."]],
+      freedom: ["Stepping back", `With Layer 5 at ${L[4]}, the business still leans on you. Freedom comes from writing things down and handing over decisions with clear rules.`,
+        ["Each week, write one SOP for a task only you do today.", "Give each manager a dashboard instead of asking them for updates.", "Take one full day off this month and note everything that breaks."]],
+      ai: ["Using AI across the business", "Start with the prompts in this report. They work today with a free AI account. Then automate the ones you use every week.",
+        ["Run one prompt a day for the next week.", "Save the prompts that work as templates for your team.", "Automate the winner: a WhatsApp agent, auto-categorised books or a Monday report."]],
+      comply: ["Compliance under control", `Layer 1 is at ${L[0]}. Most penalties come from missed dates, not wrong numbers.`,
+        ["Use the compliance-calendar prompt above and share the calendar with your CA.", "Book a 30-minute monthly call with your CA after the 20th.", "Keep every notice and reply in one folder."]],
+      grow: ["Growing revenue", `Layer 4 is at ${L[3]}. The fastest growth usually comes from leads you already have.`,
+        ["Respond to every new lead within 5 minutes.", "Run the follow-up sequence above on every lead from the last 90 days.", "Add one recurring offer (AMC, subscription, retainer) to your catalogue."]],
+    };
+    const picked = (A.goals.length ? A.goals : ["grow"]).map((g) => cards[g]).filter(Boolean);
+    return picked.map(([t, p, xs]) => `<div class="goal"><h3>${t}</h3><p class="small muted">${p}</p><ul>${xs.map((x) => `<li>${x}</li>`).join("")}</ul></div>`).join("");
+  }
+
+  function summaryText(r, top) {
+    const nm = A.name || "My business";
+    return `${nm} (${A.industry || "business"}, ${A.team || "?"} people): Duct-Tape Audit result\n` +
+      `Duct-tape tax: ${inr(r.yearly)} a year, about ${Math.round(r.wk)} hours a week\n` +
+      `System score: ${r.overall}/100 (Foundation ${r.layerScore[0]}, People ${r.layerScore[1]}, Systems ${r.layerScore[2]}, Growth ${r.layerScore[3]}, Scale ${r.layerScore[4]})\n` +
+      `Top fixes: ${top.map((t) => t.name).join(", ")}\n` +
+      `I'd like a free blueprint session and the Pancha Khosha Business Framework e-book.`;
+  }
+
+  // ---------- Report ----------
+  function showReport() {
+    const r = calc(A);
+    const sorted = r.per.filter((p) => p.ok && p.level < 3).sort((a, b) => b.rec - a.rec || a.level - b.level);
+    const top = sorted.slice(0, 3);
+    const rest = r.per.filter((p) => !top.includes(p));
+    const who = A.name ? esc(A.name) : "Your business";
+    const areaName = (p) => (p.id === "ops" && isService() ? "Projects, jobs & delivery" : p.name);
+    const weekly = Math.round(r.wk);
+
+    const moves = top.map((p, i) => {
+      const pl = PLAY[p.id];
+      return `<article class="move">
+        <div class="move-head"><div><div class="label">Move ${i + 1} · ${LAYERS[p.layer - 1].key}</div><h3>${esc(areaName(p))}</h3></div>
+          <div class="save num">≈ ${Math.round(p.rec)} hrs/week · ${inr(p.rec * 52 * r.hourly)}/yr</div></div>
+        <div class="fromto">Today: <b>${TOOL[p.level]}</b> → Target: <b>Connected</b></div>
+        <div class="cols">
+          <div><div class="label">Do this week (free)</div><ol>${val(pl.week).map((x) => `<li>${x}</li>`).join("")}</ol>
+            <p class="small muted" style="margin-top:10px"><b>What good looks like:</b> ${val(pl.target)}</p></div>
+          ${promptBlock(p.id, i)}
+        </div>
+        <div class="khosha"><b>If you want it built:</b> ${val(pl.khosha)}</div>
+      </article>`;
+    }).join("");
+
+    const more = rest.map((p, i) => `<div><h3 style="margin-bottom:8px">${esc(areaName(p))}</h3>${promptBlock(p.id, 10 + i)}</div>`).join("");
+
+    const plan = [
+      ["Weeks 1–2", [`Do the "this week" steps for ${top[0] ? areaName(top[0]).toLowerCase() : "your top area"}.`, "Run its AI prompt on real data and share the result with your team."]],
+      ["Weeks 3–6", top[1] ? [`Fix ${areaName(top[1]).toLowerCase()}: same pattern, simple steps first, then the prompt.`, "Start a 20-minute Monday numbers meeting."] : ["Start a 20-minute Monday numbers meeting."]],
+      ["Weeks 7–10", top[2] ? [`Fix ${areaName(top[2]).toLowerCase()}.`, "Write SOPs for whatever you changed so it sticks."] : ["Write SOPs for whatever you changed so it sticks."]],
+      ["Weeks 11–12", ["Pick one system of record and connect the pieces to it.", "Take this audit again and compare your duct-tape tax."]],
+    ];
+
+    const summary = summaryText(r, top.map((p) => ({ name: areaName(p) })));
+    const wa = "https://wa.me/918884972272?text=" + encodeURIComponent(summary);
+
+    $("#report").innerHTML = `
+      <section class="r-hero">
+        <div class="label">${who} · Duct-Tape Audit · ${new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</div>
+        <h2>${who} is losing about ${weekly} hours a week to duct tape.</h2>
+        <div class="big">
+          <div><b>${inr(r.yearly)}</b><span>duct-tape tax per year</span></div>
+          <div><b>${weekly} hrs</b><span>recoverable each week, out of ${Math.round(r.spent)} spent</span></div>
+          <div><b>${r.fte.toFixed(1)}</b><span>full-time people's worth of time</span></div>
+          <div><b>${r.overall}/100</b><span>system score across five layers</span></div>
+        </div>
+        <p class="small muted">This counts salary time only. It doesn't include missed leads, late fees, stock errors or your own evenings, so the real cost is higher.</p>
+        <details class="how"><summary>How we calculated this</summary><div>
+          <p>For each area: hours per week × the share we assume connected systems and automation can take back (60% for paper, 50% for Excel and WhatsApp, 30% for separate apps, 8% for already-connected work).</p>
+          <p>Hours are valued at your salary figure ÷ 200 working hours a month (${inr(r.hourly)} an hour), over 52 weeks. One full-time person = 45 hours a week.</p>
+          <p>Layer scores come from how connected each area is today (0–100). Scale comes from your answers on time off and documentation.</p>
+        </div></details>
+        <div class="hero-row"><button class="btn ghost small" type="button" id="edit">Change my answers</button></div>
+      </section>
+
+      <section>
+        <div class="label">Pancha Khosha · five layers</div>
+        <h2>Where your business is strong, and where it's held together with tape</h2>
+        <div class="layers">
+          ${rings(r.layerScore)}
+          <div class="layer-list">${LAYERS.map((L, i) => {
+            const s = r.layerScore[i] ?? 0, b = band(s);
+            return `<div class="lrow"><span class="dot" style="background:var(${L.c})"></span>
+              <div><b>${L.n} · ${L.key}</b> <span class="sub">${L.sk}</span><p>${LAYER_TEXT[L.n][b]}</p></div>
+              <span class="pill ${pillCls[b]} num">${s} · ${pillTxt[b]}</span></div>`;
+          }).join("")}</div>
+        </div>
+        <p class="small muted">Each layer rests on the one below it. Fix from the inside out: Foundation before Scale.</p>
+      </section>
+
+      <section>
+        <div class="label">Your blueprint</div>
+        <h2>From islands to one system</h2>
+        <div class="bp">
+          <div class="bp-panel"><div class="label">Today</div>
+            <div class="islands">${r.per.map((p) => `<div class="island l${p.level} ${p.level <= 1 ? "t" : ""}">${esc(areaName(p))}<small>${TOOL[p.level]} · ${p.hours} hrs/wk</small></div>`).join("")}</div>
+            <p class="small muted">Taped areas run on paper, Excel or WhatsApp. Data gets typed in twice, and things fall through the gaps.</p></div>
+          <div class="bp-panel hub"><div class="label">Target</div>${hub(r.per)}
+            <p class="small muted">Every function writes to one source of truth. AI agents and automations sit on top and do the repetitive work.</p></div>
+        </div>
+      </section>
+
+      <section>
+        <div class="label">Your top ${top.length || ""} moves</div>
+        <h2>Where the hours are</h2>
+        <p class="muted">Ranked by the time each one gives back. Each move starts with free steps you can take this week and an AI prompt written for your business.</p>
+        ${moves || `<p>Everything you described is already connected. Impressive. Use the prompts below to go further with AI.</p>`}
+        ${more ? `<details class="more"><summary>AI prompts for your other ${rest.length} areas</summary><div>${more}</div></details>` : ""}
+      </section>
+
+      <section>
+        <div class="label">Your goals</div>
+        <h2>What this means for your next 12 months</h2>
+        <div class="goals">${goalCards(r)}</div>
+      </section>
+
+      <section>
+        <div class="label">90-day plan</div>
+        <h2>One area at a time</h2>
+        <div class="plan">${plan.map(([w, xs]) => `<div class="plan-row"><div class="wk">${w}</div><ul>${xs.map((x) => `<li>${x}</li>`).join("")}</ul></div>`).join("")}</div>
+      </section>
+
+      <section class="cta">
+        <div class="label">Khosha Systems · Bengaluru</div>
+        <h2>Want us to build the blueprint with you?</h2>
+        <p>We replace duct-tape operations with connected systems and AI agents, built around how your business actually works. Book a free 30-minute blueprint session: we'll go through this report with you and sketch your target system.</p>
+        <div class="bonus"><b>Free with your session:</b> the 34-page <i>Pancha Khosha Business Framework</i> e-book and our Excel business toolkit, with templates for onboarding, attendance, books, KPIs, investor readiness and franchising.</div>
+        <div class="contact">
+          <a class="btn accent" href="${wa}" target="_blank" rel="noopener">Send my result on WhatsApp</a>
+          <button class="btn ghost" type="button" id="copySummary">Copy my summary</button>
+        </div>
+        <div class="contact small"><span>WhatsApp or call</span><code>+91 888 497 2272</code><span>Email</span><code>ankit@khoshasystems.com</code></div>
+      </section>`;
+
+    $("#wizard").hidden = true; $("#intro").hidden = true; $("#report").hidden = false;
+    window.scrollTo({ top: 0 });
+    $("#edit").addEventListener("click", () => { $("#report").hidden = true; $("#wizard").hidden = false; step = 0; renderStep(); window.scrollTo({ top: 0 }); });
+    $("#copySummary").addEventListener("click", () => copy(summary));
+  }
+
+  function toast(msg) { const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(() => (t.hidden = true), 2200); }
+  function copy(text, el) {
+    const fallback = () => {
+      if (el) { const rg = document.createRange(); rg.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(rg); toast("Selected. Press Ctrl+C or ⌘C to copy"); }
+      else toast("Couldn't copy here. Select the text and copy it.");
+    };
+    try { navigator.clipboard.writeText(text).then(() => toast("Copied"), fallback); } catch (e) { fallback(); }
+  }
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-copy]");
+    if (b) { const el = document.getElementById(b.dataset.copy); copy(el.textContent, el); }
+  });
+})();
+</script>
