@@ -61,6 +61,7 @@
     .btn { appearance: none; border: 0; cursor: pointer; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; flex: none;
       color: var(--ros-ink); background: transparent; text-decoration: none; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ros-ink) 14%, transparent); }
     .btn:hover { background: var(--ros-paper); }
+    .btn[hidden] { display: none; }
     .btn svg { width: 14px; height: 14px; }
     .tag { position: absolute; top: 10px; left: 12px; font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--ros-ink-soft); pointer-events: none; z-index: 2; }
     .hint { position: absolute; bottom: 10px; right: 12px; font-size: 11px; color: var(--ros-ink-soft); pointer-events: none; z-index: 2; }
@@ -245,7 +246,8 @@
       const dl = document.createElement('a');
       dl.className = 'btn';
       dl.href = d.file.split(' ')[0];
-      dl.download = '';
+      dl.download = d.file.split(' ')[0].split('/').pop();
+      dl.dataset.js = '';
       dl.setAttribute('aria-label', `Download ${d.title} source`);
       dl.innerHTML = ICON_DL;
       c.querySelector('.meta').append(dl);
@@ -277,6 +279,32 @@
         }
       })
       .catch(() => threeStages.forEach(([, el]) => (el.innerHTML = '<p class="fallback">Couldn’t load Three.js.</p>')));
+
+    // ---------------------------------------------------------------- downloads
+    // Locally the <a download> links just work. Inside the claude.ai viewer, plain
+    // downloads are blocked, so route them through the `downloads` capability.
+    // That viewer only accepts certain file types (JSON yes, .js no), so source
+    // links for the 3D scenes are hidden there.
+    let saver = null;
+    if (window.claude?.use) {
+      document.querySelectorAll('a.btn[download]').forEach((a) => (a.hidden = true));
+      window.claude.use('downloads').then((ns) => {
+        saver = ns;
+        if (ns) document.querySelectorAll('a.btn[download]:not([data-js])').forEach((a) => (a.hidden = false));
+      });
+      document.addEventListener('click', async (e) => {
+        const a = e.target.closest('a.btn[download]');
+        if (!a) return;
+        e.preventDefault();
+        if (!saver) return;
+        try {
+          const blob = await (await fetch(a.href)).blob();
+          await saver.save({ filename: a.getAttribute('download'), data: blob });
+        } catch (err) {
+          if (err && (err.code === 'unavailable' || err.code === 'not_granted')) a.hidden = true;
+        }
+      });
+    }
 
     // ---------------------------------------------------------------- controls
     document.querySelectorAll('[data-filter]').forEach((b) =>
