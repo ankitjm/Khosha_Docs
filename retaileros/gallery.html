@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RetailerOS Motion Library</title>
+  <meta name="description" content="Every RetailerOS animation in one grid: Lottie icons, loaders, illustrations and Three.js objects." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/retaileros.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: var(--ros-paper); color: var(--ros-ink); font: 400 15px/1.5 "Inter Tight", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+    .wrap { width: min(1240px, 100% - 32px); margin-inline: auto; }
+
+    /* header */
+    header { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--ros-paper) 88%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid color-mix(in srgb, var(--ros-ink) 9%, transparent); }
+    .bar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; padding: 14px 0; }
+    .brand { display: flex; align-items: baseline; gap: 10px; margin-right: auto; }
+    .brand h1 { font: 400 26px/1 "Instrument Serif", Georgia, serif; margin: 0; letter-spacing: -.01em; }
+    .brand span { color: var(--ros-ink-soft); font-size: 13px; }
+    .chips, .tools { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+    .chip { appearance: none; border: 0; cursor: pointer; font: 500 13px/1 "Inter Tight", sans-serif; color: var(--ros-ink); background: transparent;
+      height: 32px; padding: 0 13px; border-radius: 999px; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ros-ink) 14%, transparent); }
+    .chip[aria-pressed="true"] { background: var(--ros-ink); color: var(--ros-paper); box-shadow: none; }
+    .chip:focus-visible, .sw:focus-visible, .btn:focus-visible { outline: 2px solid var(--ros-accent); outline-offset: 2px; }
+    .sw { appearance: none; width: 22px; height: 22px; border-radius: 50%; border: 0; padding: 0; cursor: pointer; background: var(--c);
+      box-shadow: 0 0 0 2px var(--ros-paper), 0 0 0 3px color-mix(in srgb, var(--ros-ink) 14%, transparent); }
+    .sw[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--ros-paper), 0 0 0 4px var(--ros-ink); }
+    .picker { width: 26px; height: 26px; border: 0; padding: 0; background: none; cursor: pointer; }
+    .sep { width: 1px; height: 22px; background: color-mix(in srgb, var(--ros-ink) 14%, transparent); margin: 0 4px; }
+    label.toggle { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer; user-select: none; }
+    label.toggle input { accent-color: var(--ros-accent); width: 16px; height: 16px; margin: 0; }
+
+    /* sections + grid */
+    main { padding: 28px 0 80px; }
+    section { margin-top: 36px; }
+    section[hidden] { display: none; }
+    .sec-head { display: flex; align-items: baseline; gap: 10px; margin: 0 0 14px; }
+    .sec-head h2 { font: 400 30px/1 "Instrument Serif", Georgia, serif; margin: 0; }
+    .sec-head span { color: var(--ros-ink-soft); font-size: 13px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); gap: 12px; }
+    .card { position: relative; display: flex; flex-direction: column; border-radius: 18px; background: var(--ros-paper-2); overflow: hidden;
+      transition: transform var(--ros-dur-2) var(--ros-ease-out), box-shadow var(--ros-dur-2) var(--ros-ease-out); }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 18px 40px -26px rgb(0 0 0 / .35); }
+    .card.wide { grid-column: span 2; }
+    .card.tall .stage { aspect-ratio: 16 / 10; }
+    .card.clay .stage { aspect-ratio: auto; flex: 1; min-height: 230px; }
+    .stage { position: relative; aspect-ratio: 1; display: grid; place-items: center; }
+    .stage .ros-lottie { width: 76px; height: 76px; }
+    .stage .ros-lottie.flow { width: 88%; max-width: 420px; height: auto; }
+    .stage .three { position: absolute; inset: 0; }
+    .meta { display: flex; align-items: center; gap: 8px; padding: 10px 12px 12px 14px; border-top: 1px solid color-mix(in srgb, var(--ros-ink) 8%, transparent); }
+    .meta b { font-weight: 600; font-size: 14px; }
+    .meta small { display: block; color: var(--ros-ink-soft); font-size: 11.5px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .meta .txt { margin-right: auto; min-width: 0; }
+    .meta .txt b, .meta .txt small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .btn { appearance: none; border: 0; cursor: pointer; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; flex: none;
+      color: var(--ros-ink); background: transparent; text-decoration: none; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ros-ink) 14%, transparent); }
+    .btn:hover { background: var(--ros-paper); }
+    .btn[hidden] { display: none; }
+    .btn svg { width: 14px; height: 14px; }
+    .tag { position: absolute; top: 10px; left: 12px; font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--ros-ink-soft); pointer-events: none; z-index: 2; }
+    .hint { position: absolute; bottom: 10px; right: 12px; font-size: 11px; color: var(--ros-ink-soft); pointer-events: none; z-index: 2; }
+    .fallback { color: var(--ros-ink-soft); font-size: 13px; padding: 20px; text-align: center; }
+
+    /* stack labels inside a card */
+    .ros-stack { position: absolute; inset: 0; overflow: hidden; }
+    .ros-stack-label { position: absolute; left: 0; top: 0; white-space: nowrap; pointer-events: none; display: flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 500; }
+    .ros-stack-label::before { content: ""; width: 24px; height: 1px; background: currentColor; opacity: .4; }
+    .ros-stack-label small { color: var(--ros-ink-soft); font-weight: 400; }
+
+    @media (max-width: 560px) {
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+      .stage .ros-lottie { width: 64px; height: 64px; }
+      .ros-stack-label small { display: none; }
+      .brand span { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap bar">
+      <div class="brand"><h1>RetailerOS Motion Library</h1><span id="count"></span></div>
+      <div class="chips" role="group" aria-label="Filter">
+        <button class="chip" data-filter="all" aria-pressed="true">All</button>
+        <button class="chip" data-filter="icon" aria-pressed="false">Icons</button>
+        <button class="chip" data-filter="loader" aria-pressed="false">Loaders</button>
+        <button class="chip" data-filter="illustration" aria-pressed="false">Illustration</button>
+        <button class="chip" data-filter="3d" aria-pressed="false">3D</button>
+      </div>
+      <div class="tools">
+        <label class="toggle"><input type="checkbox" id="loopAll" checked /> Loop all</label>
+        <span class="sep"></span>
+        <button class="sw" style="--c:#E0602F" data-accent="#E0602F" aria-label="Terracotta accent" aria-pressed="true"></button>
+        <button class="sw" style="--c:#4F5BD5" data-accent="#4F5BD5" aria-label="Indigo accent" aria-pressed="false"></button>
+        <button class="sw" style="--c:#1F8A5B" data-accent="#1F8A5B" aria-label="Emerald accent" aria-pressed="false"></button>
+        <button class="sw" style="--c:#E89B2F" data-accent="#E89B2F" aria-label="Saffron accent" aria-pressed="false"></button>
+        <input class="picker" type="color" id="picker" value="#E0602F" aria-label="Custom accent colour" />
+        <span class="sep"></span>
+        <button class="chip" id="theme" aria-label="Toggle light or dark">Light / Dark</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" id="library"></main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie_light.min.js"></script>
+  <script type="importmap">
+    { "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    } }
+  </script>
+  <script type="module">
+    // ---------------------------------------------------------------- catalogue
+    const ICONS = [
+      ['pos', 'Billing & POS', 'Receipt prints'],
+      ['inventory', 'Inventory', 'Box drops onto stack'],
+      ['storefront', 'Online store', 'Awning breathes, door light'],
+      ['marketplaces', 'Marketplaces', 'Pulses run to channels'],
+      ['customers', 'Customers', 'Heart pops'],
+      ['books', 'Books & GST', '₹ re-writes'],
+      ['insights', 'Insights', 'Bars regrow, trend redraws'],
+      ['ai', 'AI', 'Sparkle turns, twinkle'],
+      ['payments', 'Payments', 'Contactless waves pulse'],
+      ['scan', 'Barcode scan', 'Scan line sweeps'],
+      ['cart', 'Cart', 'Item hops in'],
+      ['discount', 'Offers', 'Tag swings'],
+      ['notify', 'Notifications', 'Bell rings, badge pops'],
+      ['delivery', 'Delivery', 'Truck bumps along'],
+      ['orders', 'Order tracking', 'Pin drops'],
+      ['calendar', 'Calendar', 'Date gets circled'],
+      ['stores', 'Multi-store', 'Pins hop in turn'],
+      ['staff', 'Staff', 'Badge sways'],
+      ['controls', 'Settings', 'Sliders glide'],
+      ['search', 'Search', 'Lens scans'],
+      ['secure', 'Secure', 'Shield pulses, check redraws'],
+      ['loyalty', 'Loyalty', 'Gift lid lifts'],
+      ['sync', 'Sync', 'Arcs chase a full turn'],
+      ['success', 'Success', 'Ring closes, check lands'],
+    ];
+    const LOADERS = [
+      ['loader', 'Loader', 'Comet traces a square'],
+      ['dots', 'Typing dots', 'Three-dot bounce'],
+    ];
+    const ILLUS = [['flow', 'Sale → Stock → Books', 'Nodes light in sequence']];
+    const THREE_D = [
+      { id: 'hero', title: 'Living Shelf (hero)', file: 'js/hero-shelf.js', hint: 'move your cursor', wide: true },
+      { id: 'stack', title: 'The Stack', file: 'js/layers-stack.js', hint: 'hover to unfold', wide: true },
+      { id: 'coin', title: '₹ Coin', file: 'js/clay-objects.js · coin', hint: 'hover to flip' },
+      { id: 'parcel', title: 'Parcel', file: 'js/clay-objects.js · parcel', hint: 'hover to hop' },
+      { id: 'bag', title: 'Shopping bag', file: 'js/clay-objects.js · bag', hint: 'hover to swing' },
+    ];
+
+    const ICON_REPLAY = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 8a5.5 5.5 0 1 0 1.7-4"/><path d="M2.5 2.5V5h2.5"/></svg>';
+    const ICON_DL = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.5v8"/><path d="M4.5 7 8 10.5 11.5 7"/><path d="M3 13.5h10"/></svg>';
+
+    // ---------------------------------------------------------------- render
+    const lib = document.getElementById('library');
+    const section = (key, title, n) => {
+      const s = document.createElement('section');
+      s.dataset.group = key;
+      s.innerHTML = `<div class="sec-head"><h2>${title}</h2><span>${n}</span></div><div class="grid"></div>`;
+      lib.appendChild(s);
+      return s.querySelector('.grid');
+    };
+    const card = (grid, { title, sub, wide, tall, file, hint }) => {
+      const c = document.createElement('article');
+      c.className = 'card' + (wide ? ' wide' : '') + (tall ? ' tall' : '');
+      c.innerHTML = `<div class="stage">${hint ? `<span class="hint">${hint}</span>` : ''}</div>
+        <div class="meta"><div class="txt"><b>${title}</b><small>${sub}</small></div></div>`;
+      grid.appendChild(c);
+      return c;
+    };
+
+    const lotties = [];
+    const addLottie = (grid, [name, title, gesture], kind) => {
+      const wide = kind === 'illustration';
+      const c = card(grid, { title, sub: `${name}.json · ${gesture.toLowerCase()}`, wide, tall: wide });
+      c.title = gesture;
+      const holder = document.createElement('span');
+      holder.className = 'ros-lottie' + (wide ? ' flow' : '');
+      c.querySelector('.stage').appendChild(holder);
+      const meta = c.querySelector('.meta');
+      const replay = document.createElement('button');
+      replay.className = 'btn';
+      replay.setAttribute('aria-label', `Replay ${title}`);
+      replay.innerHTML = ICON_REPLAY;
+      const dl = document.createElement('a');
+      dl.className = 'btn';
+      dl.href = `lottie/${name}.json`;
+      dl.download = `retaileros-${name}.json`;
+      dl.setAttribute('aria-label', `Download ${title} Lottie JSON`);
+      dl.innerHTML = ICON_DL;
+      meta.append(replay, dl);
+
+      fetch(`lottie/${name}.json`).then((r) => r.json()).then((data) => {
+        const markers = Object.fromEntries((data.markers || []).map((m) => [m.cm, [m.tm, m.tm + m.dr]]));
+        const anim = lottie.loadAnimation({ container: holder, renderer: 'svg', loop: true, autoplay: false, animationData: data });
+        const entry = { anim, op: data.op, markers, isLoop: !!markers.loop, card: c, visible: false };
+        lotties.push(entry);
+        applyMode(entry);
+        c.addEventListener('pointerenter', () => {
+          if (!loopAll && markers.hover) { anim.loop = false; anim.playSegments(markers.hover, true); }
+        });
+        replay.addEventListener('click', () => { anim.loop = loopAll || entry.isLoop; anim.playSegments([0, data.op], true); });
+        vis.observe(c);
+      });
+    };
+
+    let loopAll = true;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function applyMode(e) {
+      const { anim, op, markers, isLoop } = e;
+      if (reduce) { anim.goToAndStop(markers.intro ? markers.intro[1] : Math.round(op * 0.3), true); return; }
+      if (isLoop || loopAll) { anim.loop = true; anim.playSegments([0, op], true); }
+      else { anim.loop = false; anim.goToAndStop(markers.intro ? markers.intro[1] : 0, true); }
+      if (!e.visible) anim.pause();
+    }
+    const vis = new IntersectionObserver((entries) => {
+      for (const en of entries) {
+        const e = lotties.find((l) => l.card === en.target);
+        if (!e) continue;
+        e.visible = en.isIntersecting;
+        if (reduce) continue;
+        if (en.isIntersecting && (e.isLoop || loopAll)) e.anim.play();
+        else if (!en.isIntersecting) e.anim.pause();
+      }
+    }, { rootMargin: '100px' });
+
+    const gIcons = section('icon', 'Icons', `${ICONS.length} · hover a card when looping is off`);
+    ICONS.forEach((i) => addLottie(gIcons, i, 'icon'));
+    const gLoad = section('loader', 'Loaders', LOADERS.length);
+    LOADERS.forEach((i) => addLottie(gLoad, i, 'loader'));
+    const gIll = section('illustration', 'Illustration', ILLUS.length);
+    ILLUS.forEach((i) => addLottie(gIll, i, 'illustration'));
+
+    const g3d = section('3d', '3D · Three.js', `${THREE_D.length} · Spline-style, themed from the same tokens`);
+    const threeStages = THREE_D.map((d) => {
+      const c = card(g3d, { title: d.title, sub: d.file, wide: d.wide, tall: d.wide, hint: d.hint });
+      if (!d.wide) c.classList.add('clay');
+      const dl = document.createElement('a');
+      dl.className = 'btn';
+      dl.href = d.file.split(' ')[0];
+      dl.download = d.file.split(' ')[0].split('/').pop();
+      dl.dataset.js = '';
+      dl.setAttribute('aria-label', `Download ${d.title} source`);
+      dl.innerHTML = ICON_DL;
+      c.querySelector('.meta').append(dl);
+      const stage = c.querySelector('.stage');
+      const el = document.createElement('div');
+      el.className = d.id === 'stack' ? 'ros-stack' : 'three';
+      if (d.id === 'stack') {
+        el.innerHTML = `<div class="ros-stack-label" data-layer="0">Sell <small>POS · store</small></div>
+          <div class="ros-stack-label" data-layer="1">Stock <small>inventory</small></div>
+          <div class="ros-stack-label" data-layer="2">Books <small>GST</small></div>`;
+      }
+      stage.appendChild(el);
+      return [d.id, el];
+    });
+
+    document.getElementById('count').textContent = `${ICONS.length + LOADERS.length + ILLUS.length + THREE_D.length} animated elements`;
+
+    // 3D mounts (lazy: modules load once, each scene pauses off-screen itself)
+    Promise.all([import('./js/hero-shelf.js'), import('./js/layers-stack.js'), import('./js/clay-objects.js')])
+      .then(([{ mountHero }, { mountStack }, { mountClay }]) => {
+        for (const [id, el] of threeStages) {
+          try {
+            if (id === 'hero') mountHero(el, { cols: 34, rows: 24, framing: 'tile' });
+            else if (id === 'stack') mountStack(el);
+            else mountClay(el, id);
+          } catch (err) {
+            el.innerHTML = '<p class="fallback">3D needs WebGL, which this browser has turned off.</p>';
+          }
+        }
+      })
+      .catch(() => threeStages.forEach(([, el]) => (el.innerHTML = '<p class="fallback">Couldn’t load Three.js.</p>')));
+
+    // ---------------------------------------------------------------- downloads
+    // Locally the <a download> links just work. Inside the claude.ai viewer, plain
+    // downloads are blocked, so route them through the `downloads` capability.
+    // That viewer only accepts certain file types (JSON yes, .js no), so source
+    // links for the 3D scenes are hidden there.
+    let saver = null;
+    if (window.claude?.use) {
+      document.querySelectorAll('a.btn[download]').forEach((a) => (a.hidden = true));
+      window.claude.use('downloads').then((ns) => {
+        saver = ns;
+        if (ns) document.querySelectorAll('a.btn[download]:not([data-js])').forEach((a) => (a.hidden = false));
+      });
+      document.addEventListener('click', async (e) => {
+        const a = e.target.closest('a.btn[download]');
+        if (!a) return;
+        e.preventDefault();
+        if (!saver) return;
+        try {
+          const blob = await (await fetch(a.href)).blob();
+          await saver.save({ filename: a.getAttribute('download'), data: blob });
+        } catch (err) {
+          if (err && (err.code === 'unavailable' || err.code === 'not_granted')) a.hidden = true;
+        }
+      });
+    }
+
+    // ---------------------------------------------------------------- controls
+    document.querySelectorAll('[data-filter]').forEach((b) =>
+      b.addEventListener('click', () => {
+        document.querySelectorAll('[data-filter]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+        const f = b.dataset.filter;
+        document.querySelectorAll('section[data-group]').forEach((s) => (s.hidden = f !== 'all' && s.dataset.group !== f));
+      })
+    );
+    document.getElementById('loopAll').addEventListener('change', (e) => {
+      loopAll = e.target.checked;
+      lotties.forEach(applyMode);
+    });
+
+    const root = document.documentElement;
+    const setAccent = (hex) => {
+      root.style.setProperty('--ros-accent', hex);
+      document.querySelectorAll('.sw').forEach((s) => s.setAttribute('aria-pressed', String(s.dataset.accent.toLowerCase() === hex.toLowerCase())));
+      document.getElementById('picker').value = hex;
+    };
+    document.querySelectorAll('.sw').forEach((s) => s.addEventListener('click', () => setAccent(s.dataset.accent)));
+    document.getElementById('picker').addEventListener('input', (e) => setAccent(e.target.value));
+    document.getElementById('theme').addEventListener('click', () => {
+      const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+      root.dataset.theme = dark ? 'light' : 'dark';
+    });
+  </script>
+</body>
+</html>

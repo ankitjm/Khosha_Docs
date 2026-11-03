@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RetailerOS Motion Kit</title>
+  <meta name="description" content="Lottie icons, Three.js hero and a Spline-style 3D stack for the RetailerOS landing page." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/retaileros.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0; background: var(--ros-paper); color: var(--ros-ink);
+      font: 400 16px/1.55 "Inter Tight", system-ui, sans-serif; -webkit-font-smoothing: antialiased;
+    }
+    .serif { font-family: "Instrument Serif", Georgia, serif; font-weight: 400; letter-spacing: -0.01em; }
+    a { color: inherit; }
+    .wrap { width: min(1160px, 100% - 32px); margin-inline: auto; }
+    .eyebrow { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--ros-ink-soft); }
+
+    /* nav */
+    nav { position: absolute; inset: 0 0 auto; z-index: 3; }
+    nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 72px; }
+    .mark { display: flex; align-items: center; gap: 10px; font-weight: 600; letter-spacing: -.01em; }
+    .mark .dot { width: 10px; height: 10px; border-radius: 3px; background: var(--ros-accent); }
+    .nav-r { display: flex; gap: 8px; align-items: center; }
+    .btn {
+      appearance: none; border: 0; cursor: pointer; font: 500 15px/1 "Inter Tight", sans-serif;
+      display: inline-flex; align-items: center; gap: 10px; height: 46px; padding: 0 20px; border-radius: 999px;
+      background: var(--ros-ink); color: var(--ros-paper); text-decoration: none;
+      transition: transform var(--ros-dur-1) var(--ros-ease-out), background var(--ros-dur-1);
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn.ghost { background: transparent; color: var(--ros-ink); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ros-ink) 20%, transparent); }
+    .btn .ros-lottie { width: 22px; height: 22px; }
+    .icon-btn { width: 40px; height: 40px; padding: 0; justify-content: center; }
+
+    /* hero */
+    .hero { position: relative; height: min(100svh, 880px); min-height: 620px; overflow: hidden; }
+    .hero-canvas { position: absolute; inset: 0; }
+    .hero::after { /* fade the field into the page */
+      content: ""; position: absolute; inset: auto 0 0; height: 30%;
+      background: linear-gradient(to bottom, transparent, var(--ros-paper)); pointer-events: none;
+    }
+    .hero-copy { position: relative; z-index: 2; padding-top: clamp(120px, 18vh, 190px); text-align: center; }
+    .hero h1 { font-size: clamp(44px, 7.4vw, 96px); line-height: .98; margin: 18px auto 20px; text-wrap: balance; }
+    .hero h1 em { color: var(--ros-accent); white-space: nowrap; }
+    .hero-copy::before { /* soft paper halo keeps copy legible over the field */
+      content: ""; position: absolute; z-index: -1; left: 50%; top: 52%; width: min(900px, 120%); height: 520px; translate: -50% -50%;
+      background: radial-gradient(closest-side, var(--ros-paper) 30%, color-mix(in srgb, var(--ros-paper) 0%, transparent)); opacity: .85; pointer-events: none; }
+    .hero p { max-width: 520px; margin: 0 auto 30px; color: var(--ros-ink-soft); font-size: 18px; }
+    .hero .ctas { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+    section { padding: clamp(72px, 11vw, 140px) 0; }
+    h2 { font-size: clamp(36px, 5vw, 60px); line-height: 1.02; margin: 14px 0 18px; max-width: 16ch; }
+    .lead { color: var(--ros-ink-soft); max-width: 520px; margin: 0; }
+
+    /* modules */
+    .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin-top: 56px;
+      background: color-mix(in srgb, var(--ros-ink) 10%, transparent); border-radius: 22px; overflow: hidden;
+      border: 1px solid color-mix(in srgb, var(--ros-ink) 10%, transparent); }
+    .card { background: var(--ros-paper); padding: 28px 24px 30px; min-height: 220px; display: flex; flex-direction: column; gap: 14px;
+      transition: background var(--ros-dur-2) var(--ros-ease-out); text-decoration: none; }
+    .card:hover, .card:focus-visible { background: var(--ros-paper-2); outline: none; }
+    .card h3 { margin: auto 0 0; font-size: 18px; font-weight: 600; letter-spacing: -.01em; }
+    .card p { margin: 0; font-size: 14.5px; color: var(--ros-ink-soft); }
+    @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 520px) { .grid { grid-template-columns: 1fr; } .card { min-height: 0; } }
+
+    /* flow */
+    .flow { display: grid; grid-template-columns: 1fr 1.1fr; gap: 48px; align-items: center; }
+    .flow-art { display: flex; flex-direction: column; align-items: center; padding: 40px 24px; border-radius: 22px; background: var(--ros-paper-2); }
+    .flow-steps { display: grid; grid-template-columns: repeat(3, 1fr); width: 100%; max-width: 540px; margin-top: 10px; text-align: center; font-size: 13px; color: var(--ros-ink-soft); }
+    @media (max-width: 900px) { .flow { grid-template-columns: 1fr; } }
+
+    /* stack */
+    .stack-sec { background: var(--ros-paper-2); }
+    .stack-grid { display: grid; grid-template-columns: .9fr 1.4fr; gap: 24px; align-items: center; }
+    .ros-stack { position: relative; height: 560px; overflow: hidden; }
+    .ros-stack-label {
+      position: absolute; left: 0; top: 0; white-space: nowrap; pointer-events: none;
+      display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 500;
+      transition: opacity var(--ros-dur-2) var(--ros-ease-out);
+    }
+    .ros-stack-label::before { content: ""; width: 36px; height: 1px; background: currentColor; opacity: .4; }
+    .ros-stack-label small { color: var(--ros-ink-soft); font-weight: 400; }
+    @media (max-width: 900px) {
+      .stack-grid { grid-template-columns: 1fr; }
+      .ros-stack { height: 440px; }
+      .ros-stack-label { font-size: 12px; }
+      .ros-stack-label small { display: none; }
+    }
+
+    /* toasts */
+    .toasts { display: grid; gap: 12px; max-width: 420px; margin-top: 36px; }
+    .toast { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-radius: 16px; background: var(--ros-paper);
+      box-shadow: 0 1px 0 color-mix(in srgb, var(--ros-ink) 6%, transparent), 0 12px 32px -18px rgb(0 0 0 / .25); font-size: 14.5px; }
+    .toast .ros-lottie { width: 32px; height: 32px; flex: none; }
+    .toast small { display: block; color: var(--ros-ink-soft); font-size: 12.5px; }
+    .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+    @media (max-width: 900px) { .status-grid { grid-template-columns: 1fr; } }
+
+    /* CTA */
+    .cta { text-align: center; }
+    .cta h2 { margin-inline: auto; }
+    .demo-form { display: inline-flex; gap: 8px; margin-top: 28px; padding: 6px; border-radius: 999px; background: var(--ros-paper-2); max-width: 100%; }
+    .demo-form input { min-width: 0; flex: 1; width: 240px; border: 0; background: transparent; padding: 0 16px; font: inherit; color: inherit; outline: none; }
+    .demo-form .btn { min-width: 150px; justify-content: center; }
+    .demo-form .state { display: none; }
+    .demo-form[data-state="idle"] .s-idle, .demo-form[data-state="busy"] .s-busy, .demo-form[data-state="done"] .s-done { display: inline-flex; align-items: center; gap: 8px; }
+    footer { padding: 40px 0 60px; color: var(--ros-ink-soft); font-size: 13px; }
+    footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-top: 1px solid color-mix(in srgb, var(--ros-ink) 10%, transparent); padding-top: 24px; }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="wrap">
+      <div class="mark"><span class="dot"></span>RetailerOS</div>
+      <div class="nav-r">
+        <button class="btn ghost icon-btn" id="theme" aria-label="Toggle theme">◐</button>
+        <a class="btn" href="#demo" data-lottie-hover>Book a demo <span class="ros-lottie is-mono" data-lottie="sync"></span></a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 1 · HERO — Three.js "Living Shelf" -->
+  <header class="hero">
+    <div class="hero-canvas" data-ros-hero></div>
+    <div class="hero-copy wrap">
+      <div class="eyebrow">Retail operating system</div>
+      <h1 class="serif">Every counter,<br /> every shelf, <em>in sync.</em></h1>
+      <p>Billing, stock, your online store, marketplaces and books — one calm system that moves the moment a sale happens.</p>
+      <div class="ctas">
+        <a class="btn" href="#demo" data-lottie-hover><span class="ros-lottie is-mono" data-lottie="ai"></span>See it live</a>
+        <a class="btn ghost" href="#modules">Explore modules</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2 · MODULES — Lottie icon set -->
+  <section id="modules">
+    <div class="wrap">
+      <div class="eyebrow">Modules</div>
+      <h2 class="serif">Everything a modern store runs on.</h2>
+      <p class="lead">Each icon draws itself as it enters the screen, then answers your cursor with a small, specific gesture.</p>
+      <div class="grid">
+        <a class="card" href="#" data-lottie-hover><span class="ros-lottie lg" data-lottie="pos"></span><h3>Billing &amp; POS</h3><p>Fast checkout that prints, splits and syncs.</p></a>
+        <a class="card" href="#" data-lottie-hover><span class="ros-lottie lg" data-lottie="inventory"></span><h3>Inventory</h3><p>Stock that updates itself, store by store.</p></a>
+        <a class="card" href="#" data-lottie-hover><span class="ros-lottie lg" data-lottie="storefront"></span><h3>Online store</h3><p>Your catalogue, open for business 24×7.</p></a>
+        <a class="card" href="#" data-lottie-hover><span class="ros-lottie lg" data-lottie="marketplaces"></span><h3>Marketplaces</h3><p>One catalogue pushed to every channel.</p></a>
+        <a class="card" href="#" data-lottie-hover><span class="ros-lottie lg" data-lottie="customers"></span><h3>Customers</h3><p>Know who comes back, and why.</p></a>
+        <a class="card" href="#" data-lottie-hover><span class="ros-lottie lg" data-lottie="books"></span><h3>Books &amp; GST</h3><p>Invoices and returns, ready when you are.</p></a>
+        <a class="card" href="#" data-lottie-hover><span class="ros-lottie lg" data-lottie="insights"></span><h3>Insights</h3><p>The numbers that matter, every morning.</p></a>
+        <a class="card" href="#" data-lottie-hover><span class="ros-lottie lg" data-lottie="ai"></span><h3>AI, built in</h3><p>Descriptions, summaries and reorder nudges.</p></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · FLOW — Lottie illustration -->
+  <section>
+    <div class="wrap flow">
+      <div>
+        <div class="eyebrow">How it works</div>
+        <h2 class="serif">One sale. Everywhere at once.</h2>
+        <p class="lead">Ring up a bill and the stock count, the online store and the ledger all move together. No end-of-day reconciling.</p>
+      </div>
+      <div class="flow-art">
+        <span class="ros-lottie flow" data-lottie="flow" aria-label="A sale updates stock, then books"></span>
+        <div class="flow-steps"><span>Sale</span><span>Stock</span><span>Books</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · STACK — Spline-style 3D -->
+  <section class="stack-sec">
+    <div class="wrap stack-grid">
+      <div>
+        <div class="eyebrow">Architecture</div>
+        <h2 class="serif">Three layers. One system.</h2>
+        <p class="lead">Scroll or hover to unfold it. Selling, stock and money stay separate where it helps, and connected everywhere else.</p>
+      </div>
+      <div class="ros-stack" data-ros-stack>
+        <div class="ros-stack-label" data-layer="0">Sell <small>POS · online store</small></div>
+        <div class="ros-stack-label" data-layer="1">Stock <small>inventory · marketplaces</small></div>
+        <div class="ros-stack-label" data-layer="2">Books <small>accounting · GST</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · STATUS — icons reused as product micro-feedback -->
+  <section>
+    <div class="wrap status-grid">
+      <div>
+        <div class="eyebrow">Inside the product</div>
+        <h2 class="serif">The same motion, after sign-up.</h2>
+        <p class="lead">The icon set doubles as product feedback: sync states, order tracking and confirmations. The marketing site and the app speak one visual language.</p>
+      </div>
+      <div class="toasts">
+        <div class="toast" data-lottie-hover><span class="ros-lottie" data-lottie="sync"></span><div>Catalogue synced<small>412 items · 3 marketplaces</small></div></div>
+        <div class="toast" data-lottie-hover><span class="ros-lottie" data-lottie="orders"></span><div>Order #1042 is out for delivery<small>Indiranagar → Koramangala</small></div></div>
+        <div class="toast" data-lottie-hover><span class="ros-lottie" data-lottie="success"></span><div>GST return filed<small>October 2026</small></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · CTA — loader → success micro-interaction -->
+  <section class="cta" id="demo">
+    <div class="wrap">
+      <div class="eyebrow">Get started</div>
+      <h2 class="serif">See your store on RetailerOS.</h2>
+      <form class="demo-form" data-state="idle" onsubmit="return false">
+        <input type="tel" placeholder="Your phone number" aria-label="Phone number" />
+        <button class="btn" type="submit">
+          <span class="state s-idle">Book a demo</span>
+          <span class="state s-busy"><span class="ros-lottie sm is-mono" data-lottie="loader"></span></span>
+          <span class="state s-done"><span class="ros-lottie sm is-mono" data-lottie="success" id="done-icon"></span>We'll call you</span>
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <footer><div class="wrap"><span>RetailerOS motion kit · sample copy</span><span>Lottie · Three.js</span></div></footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie_light.min.js"></script>
+  <script src="js/lottie-icons.js" data-base="lottie/"></script>
+  <script type="importmap">
+    { "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    } }
+  </script>
+  <script type="module">
+    import { mountHero } from './js/hero-shelf.js';
+    import { mountStack } from './js/layers-stack.js';
+    mountHero(document.querySelector('[data-ros-hero]'));
+    mountStack(document.querySelector('[data-ros-stack]'));
+
+    // theme toggle
+    const root = document.documentElement;
+    document.getElementById('theme').addEventListener('click', () => {
+      const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+      root.dataset.theme = dark ? 'light' : 'dark';
+    });
+
+    // demo form: loader → success
+    const form = document.querySelector('.demo-form');
+    form.addEventListener('submit', () => {
+      if (form.dataset.state !== 'idle') return;
+      form.dataset.state = 'busy';
+      setTimeout(() => {
+        form.dataset.state = 'done';
+        const a = document.getElementById('done-icon').__anim;
+        a && a.playSegments([0, 60], true);
+      }, 1600);
+    });
+  </script>
+</body>
+</html>

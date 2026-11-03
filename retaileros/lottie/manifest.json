@@ -1,0 +1,296 @@
+[
+  {
+    "name": "pos",
+    "file": "pos.json",
+    "w": 96,
+    "h": 96,
+    "frames": 150,
+    "markers": [
+      "intro",
+      "hover"
+    ]
+  },
+  {
+    "name": "inventory",
+    "file": "inventory.json",
+    "w": 96,
+    "h": 96,
+    "frames": 150,
+    "markers": [
+      "intro",
+      "hover"
+    ]
+  },
+  {
+    "name": "storefront",
+    "file": "storefront.json",
+    "w": 96,
+    "h": 96,
+    "frames": 150,
+    "markers": [
+      "intro",
+      "hover"
+    ]
+  },
+  {
+    "name": "marketplaces",
+    "file": "marketplaces.json",
+    "w": 96,
+    "h": 96,
+    "frames": 150,
+    "markers": [
+      "intro",
+      "hover"
+    ]
+  },
+  {
+    "name": "customers",
+    "file": "customers.json",
+    "w": 96,
+    "h": 96,
+    "frames": 150,
+    "markers": [
+      "intro",
+      "hover"
+    ]
+  },
+  {
+    "name": "books",
+    "file": "books.json",
+    "w": 96,
+    "h": 96,
+    "frames": 150,
+    "markers": [
+      "intro",
+      "hover"
+    ]
+  },
+  {
+    "name": "insights",
+    "file": "insights.json",
+    "w": 96,
+    "h": 96,
+    "frames": 150,
+    "markers": [
+      "intro",
+      "hover"
+    ]
+  },
+  {
+    "name": "ai",
+    "file": "ai.json",
+    "w": 96,
+    "h": 96,
+    "frames": 150,
+    "markers": [
+      "intro",
+      "hover"
+    ]
+  },
+  {
+    "name": "sync",
+    "file": "sync.json",
+    "w": 96,
+    "h": 96,
+    "frames": 150,
+    "markers": [
+      "intro",
+      "hover"
+    ]
+  },
+  {
+    "name": "success",
+    "file": "success.json",
+    "w": 96,
+    "h": 96,
+    "frames": 150,
+    "markers": [
+      "intro",
+      "hover"
+    ]
+  },
+  {
+    "name": "orders",
+    "file": "orders.json",
+    "w": 96,
+    "h": 96,
+    "frames": 150,
+    "markers": [
+      "intro",
+      "hover"
+    ]
+  },
+  {
+    "name": "payments",
+    "file": "payments.json",
+    "w": 96,
+    "h": 96,
+    "frames": 150,
+    "markers": [
+      "intro",
+      "hover"
+    ]
+  },
+  {
+    "name": "scan",
+    "file": "scan.json",
+    "w": 96,
+    "h": 96,
+    "frames": 150,
+    "markers": [
+      "intro",
+      "hover"
+    ]
+  },
+  {
+    "name": "cart",
+    "file": "cart.json",
+    "w": 96,
+    "h": 96,
+    "frames": 150,
+    "markers": [
+      "intro",
+      "hover"
+    ]
+  },
+  {
+    "name": "discount",
+    "file": "discount.json",
+    "w": 96,
+    "h": 96,
+    "frames": 150,
+    "markers": [
+      "intro",
+      "hover"
+    ]
+  },
+  {
+    "name": "notify",
+    "file": "notify.json",
+    "w": 96,
+    "h": 96,
+    "frames": 150,
+    "markers": [
+      "intro",
+      "hover"
+    ]
+  },
+  {
+    "name": "delivery",
+    "file": "delivery.json",
+    "w": 96,
+    "h": 96,
+    "frames": 150,
+    "markers": [
+      "intro",
+      "hover"
+    ]
+  },
+  {
+    "name": "calendar",
+    "file": "calendar.json",
+    "w": 96,
+    "h": 96,
+    "frames": 150,
+    "markers": [
+      "intro",
+      "hover"
+    ]
+  },
+  {
+    "name": "stores",
+    "file": "stores.json",
+    "w": 96,
+    "h": 96,
+    "frames": 150,
+    "markers": [
+      "intro",
+      "hover"
+    ]
+  },
+  {
+    "name": "staff",
+    "file": "staff.json",
+    "w": 96,
+    "h": 96,
+    "frames": 150,
+    "markers": [
+      "intro",
+      "hover"
+    ]
+  },
+  {
+    "name": "controls",
+    "file": "controls.json",
+    "w": 96,
+    "h": 96,
+    "frames": 150,
+    "markers": [
+      "intro",
+      "hover"
+    ]
+  },
+  {
+    "name": "search",
+    "file": "search.json",
+    "w": 96,
+    "h": 96,
+    "frames": 150,
+    "markers": [
+      "intro",
+      "hover"
+    ]
+  },
+  {
+    "name": "secure",
+    "file": "secure.json",
+    "w": 96,
+    "h": 96,
+    "frames": 150,
+    "markers": [
+      "intro",
+      "hover"
+    ]
+  },
+  {
+    "name": "loyalty",
+    "file": "loyalty.json",
+    "w": 96,
+    "h": 96,
+    "frames": 150,
+    "markers": [
+      "intro",
+      "hover"
+    ]
+  },
+  {
+    "name": "dots",
+    "file": "dots.json",
+    "w": 96,
+    "h": 96,
+    "frames": 90,
+    "markers": [
+      "loop"
+    ]
+  },
+  {
+    "name": "loader",
+    "file": "loader.json",
+    "w": 96,
+    "h": 96,
+    "frames": 120,
+    "markers": [
+      "loop"
+    ]
+  },
+  {
+    "name": "flow",
+    "file": "flow.json",
+    "w": 360,
+    "h": 120,
+    "frames": 240,
+    "markers": [
+      "loop"
+    ]
+  }
+]
