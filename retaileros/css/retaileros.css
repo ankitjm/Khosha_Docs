@@ -1,0 +1,64 @@
+/* =============================================================================
+   RetailerOS — motion tokens + Lottie recolour hooks
+   Drop this file into the landing page. Change the brand once, here; Lottie
+   icons (SVG renderer) and the Three.js scenes read these variables.
+   ========================================================================== */
+
+:root {
+  /* brand */
+  --ros-ink: #16171b;          /* primary line / text */
+  --ros-ink-soft: #5b5e66;     /* secondary text */
+  --ros-paper: #f5f2ec;        /* warm off-white canvas */
+  --ros-paper-2: #ebe6dc;      /* raised surface */
+  --ros-accent: #e0602f;       /* one accent, used sparingly */
+  --ros-accent-soft: #f3c7b0;
+
+  /* motion */
+  --ros-ease-out: cubic-bezier(0.16, 1, 0.3, 1);   /* same curve as the Lottie set */
+  --ros-ease-io: cubic-bezier(0.65, 0, 0.35, 1);
+  --ros-dur-1: 240ms;
+  --ros-dur-2: 600ms;
+  --ros-dur-3: 1000ms;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ros-ink: #f2efe8;
+    --ros-ink-soft: #a3a39d;
+    --ros-paper: #0f1012;
+    --ros-paper-2: #1a1b1f;
+    --ros-accent: #f07a45;
+    --ros-accent-soft: #5a2c19;
+  }
+}
+:root[data-theme="dark"] {
+  --ros-ink: #f2efe8;
+  --ros-ink-soft: #a3a39d;
+  --ros-paper: #0f1012;
+  --ros-paper-2: #1a1b1f;
+  --ros-accent: #f07a45;
+  --ros-accent-soft: #5a2c19;
+}
+
+/* ---- Lottie icons ----------------------------------------------------------
+   Layers in every JSON carry a class: ink | accent | ink-fill | accent-fill.
+   CSS beats SVG presentation attributes, so these recolour the whole set.   */
+.ros-lottie { display: inline-block; width: 48px; height: 48px; line-height: 0; color: var(--ros-ink); }
+.ros-lottie svg { display: block; width: 100% !important; height: 100% !important; overflow: visible; }
+.ros-lottie .ink path        { stroke: var(--ros-icon-ink, currentColor); }
+.ros-lottie .accent path     { stroke: var(--ros-icon-accent, var(--ros-accent)); }
+.ros-lottie .ink-fill path   { fill: var(--ros-icon-ink, currentColor); }
+.ros-lottie .accent-fill path{ fill: var(--ros-icon-accent, var(--ros-accent)); }
+
+/* mono variant — e.g. inside a button: everything takes the text colour */
+.ros-lottie.is-mono { color: inherit; --ros-icon-accent: currentColor; }
+
+/* sizes */
+.ros-lottie.sm { width: 32px; height: 32px; }
+.ros-lottie.lg { width: 64px; height: 64px; }
+.ros-lottie.xl { width: 96px; height: 96px; }
+.ros-lottie.flow { display: block; width: 100%; max-width: 540px; height: auto; aspect-ratio: 3 / 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto !important; }
+}
